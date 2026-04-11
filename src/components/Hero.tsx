@@ -102,15 +102,15 @@ export default function Hero() {
 
             // mobile = smooth floating only
             animate={{
-              y: isMobile ? [0, -8, 0] : [0, -6, 0],
-              scale: [1, 1.02, 1],
-            }}
+  y: isMobile ? [0, -5, 0] : [0, -6, 0],
+  scale: isMobile ? [1, 1.01, 1] : [1, 1.02, 1],
+}}
 
             transition={{
-              duration: isMobile ? 6 : 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+  duration: isMobile ? 8 : 10,
+  repeat: Infinity,
+  ease: "easeInOut",
+}}
           />
 
           {/* particles (reduced for mobile) */}

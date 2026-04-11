@@ -2,7 +2,9 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 
 export default function GlobalBackground() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+  typeof window !== "undefined" ? window.innerWidth < 768 : true
+);
 
   const mouseX = useMotionValue(800);
   const mouseY = useMotionValue(400);
@@ -43,22 +45,25 @@ export default function GlobalBackground() {
   }, [isMobile, mouseX, mouseY]);
 
   const mainParticles = useMemo(
-    () => Array.from({ length: isMobile ? 16 : 32 }, (_, i) => i),
-    [isMobile]
-  );
+  () => Array.from({ length: isMobile ? 12 : 32 }, (_, i) => i),
+  [isMobile]
+);
 
-  const leftParticles = useMemo(
-    () => Array.from({ length: isMobile ? 8 : 16 }, (_, i) => i),
-    [isMobile]
-  );
+const leftParticles = useMemo(
+  () => Array.from({ length: isMobile ? 6 : 16 }, (_, i) => i),
+  [isMobile]
+);
 
-  const rightParticles = useMemo(
-    () => Array.from({ length: isMobile ? 6 : 12 }, (_, i) => i),
-    [isMobile]
-  );
+const rightParticles = useMemo(
+  () => Array.from({ length: isMobile ? 5 : 12 }, (_, i) => i),
+  [isMobile]
+);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#f6f6f4]">
+    <div
+  className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#f6f6f4]"
+  style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
+>
       {/* grid */}
       <div className="absolute inset-0 opacity-[0.45]">
         <div
@@ -104,13 +109,34 @@ export default function GlobalBackground() {
 
       {/* floating blur orbs */}
       <motion.div
-        className="absolute left-[8%] top-[12%] h-28 w-28 rounded-full bg-black/6 blur-3xl md:h-56 md:w-56"
-        style={{ x: orbX1, y: orbY1 }}
-      />
-      <motion.div
-        className="absolute bottom-[8%] right-[10%] h-32 w-32 rounded-full bg-black/8 blur-3xl md:h-64 md:w-64"
-        style={{ x: orbX2, y: orbY2 }}
-      />
+  className="absolute left-[8%] top-[12%] h-28 w-28 rounded-full bg-black/6 blur-3xl md:h-56 md:w-56"
+  style={!isMobile ? { x: orbX1, y: orbY1 } : {}}
+  animate={
+    isMobile
+      ? { y: [0, -10, 0], x: [0, 6, 0] }
+      : undefined
+  }
+  transition={
+    isMobile
+      ? { duration: 10, repeat: Infinity, ease: "easeInOut" }
+      : undefined
+  }
+/>
+
+<motion.div
+  className="absolute bottom-[8%] right-[10%] h-32 w-32 rounded-full bg-black/8 blur-3xl md:h-64 md:w-64"
+  style={!isMobile ? { x: orbX2, y: orbY2 } : {}}
+  animate={
+    isMobile
+      ? { y: [0, 10, 0], x: [0, -6, 0] }
+      : undefined
+  }
+  transition={
+    isMobile
+      ? { duration: 12, repeat: Infinity, ease: "easeInOut" }
+      : undefined
+  }
+/>
       <motion.div
         className="absolute right-[24%] top-[22%] h-20 w-20 rounded-full bg-black/5 blur-2xl md:h-40 md:w-40"
         animate={{

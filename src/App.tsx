@@ -7,17 +7,31 @@ import GlobalBackground from "@/components/GlobalBackground";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import SocialSidebar from "./components/SocialSidebar";
+import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const AppContent = () => {
+  const [showBackground, setShowBackground] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setShowBackground(window.innerWidth >= 768);
+    };
+
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  return (
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
         <div className="relative min-h-screen overflow-hidden bg-[#f6f6f4] text-black">
-          <GlobalBackground />
+          {showBackground && <GlobalBackground />}
           <SocialSidebar />
 
           <div className="relative z-10">
@@ -29,6 +43,12 @@ const App = () => (
         </div>
       </BrowserRouter>
     </TooltipProvider>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <AppContent />
   </QueryClientProvider>
 );
 

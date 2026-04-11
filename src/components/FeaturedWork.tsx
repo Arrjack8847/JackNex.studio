@@ -10,14 +10,14 @@ const projects = [
     description:
       "A modern wedding platform for browsing designs, placing orders, and managing bookings.",
     desktopImages: [
-      "/projects/project2/project1.PNG",
-      "/projects/project2/project2.PNG",
-      "/projects/project2/project3.PNG",
+      "/projects/project2/project1.webp",
+      "/projects/project2/project2.webp",
+      "/projects/project2/project3.webp",
     ],
     mobileImages: [
-      "/projects/project2/pproject1.PNG",
-      "/projects/project2/pproject2.PNG",
-      "/projects/project2/pproject3.PNG",
+      "/projects/project2/pproject1.webp",
+      "/projects/project2/pproject2.webp",
+      "/projects/project2/pproject3.webp",
     ],
     link: "https://final-elegent-star.vercel.app/", // replace later
   },
@@ -28,14 +28,14 @@ const projects = [
     description:
       "A bold gym website designed to attract members and showcase training programs.",
     desktopImages: [
-      "/projects/project1/project1.PNG",
-      "/projects/project1/project2.PNG",
-      "/projects/project1/project3.PNG",
+      "/projects/project1/project1.webp",
+      "/projects/project1/project2.webp",
+      "/projects/project1/project3.webp",
     ],
     mobileImages: [
-      "/projects/project1/pproject1.PNG",
-      "/projects/project1/pproject2.PNG",
-      "/projects/project1/pproject3.PNG",
+      "/projects/project1/pproject1.webp",
+      "/projects/project1/pproject2.webp",
+      "/projects/project1/pproject3.webp",
     ],
     link: "https://power-house-coral.vercel.app/",
   },

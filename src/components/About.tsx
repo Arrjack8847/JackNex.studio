@@ -45,7 +45,7 @@ const About = () => {
             >
               {/* image */}
               <motion.img
-  src="public/hero-man1.png"
+  src="/hero-man.png"
   alt="Portrait"
   className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
   animate={{ scale: [1, 1.03, 1] }}

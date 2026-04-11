@@ -3,80 +3,44 @@ import { Instagram, Facebook, Linkedin } from "lucide-react";
 
 const SocialSidebar = () => {
   return (
-    <>
-      {/* ================= DESKTOP SIDEBAR ================= */}
-      <div className="fixed left-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-6 md:flex">
-        
-        <div className="h-20 w-[1px] bg-black/20" />
+    <div className="fixed left-3 top-1/2 z-50 flex -translate-y-1/2 flex-col items-center gap-4 sm:left-4 md:left-6 md:gap-6">
+      <div className="h-12 w-[1px] bg-black/20 md:h-20" />
 
-        <motion.a
-          href="https://www.instagram.com/jacknex.studio"
-          target="_blank"
-          whileHover={{ scale: 1.15, x: 3 }}
-          className="text-black/50 hover:text-black transition"
-        >
-          <Instagram className="w-4 h-4" />
-        </motion.a>
-
-        <motion.a
-          href="https://www.facebook.com/share/1CqfvBfBzs/?mibextid=wwXIfr"
-          target="_blank"
-          whileHover={{ scale: 1.15, x: 3 }}
-          className="text-black/50 hover:text-black transition"
-        >
-          <Facebook className="w-4 h-4" />
-        </motion.a>
-
-        <motion.a
-          href="https://www.linkedin.com/in/soe-min-khant-1a138534b"
-          target="_blank"
-          whileHover={{ scale: 1.15, x: 3 }}
-          className="text-black/50 hover:text-black transition"
-        >
-          <Linkedin className="w-4 h-4" />
-        </motion.a>
-
-        <div className="h-20 w-[1px] bg-black/20" />
-      </div>
-
-      {/* ================= MOBILE BOTTOM BAR ================= */}
-      <motion.div
-        initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="fixed bottom-5 left-1/2 z-50 flex w-[90%] max-w-sm -translate-x-1/2 items-center justify-between rounded-full border border-black/10 bg-white/60 px-6 py-3 backdrop-blur-xl md:hidden"
+      <motion.a
+        href="https://www.instagram.com/jacknex.studio"
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ scale: 1.15, x: 3 }}
+        whileTap={{ scale: 0.92 }}
+        className="text-black/50 transition hover:text-black"
       >
-        {/* Instagram */}
-        <motion.a
-          href="https://www.instagram.com/jacknex.studio"
-          target="_blank"
-          whileTap={{ scale: 0.9 }}
-          className="text-black/60 active:text-black"
-        >
-          <Instagram className="w-5 h-5" />
-        </motion.a>
+        <Instagram className="h-4 w-4 md:h-5 md:w-5" />
+      </motion.a>
 
-        {/* Facebook */}
-        <motion.a
-          href="https://www.facebook.com/share/1CqfvBfBzs/?mibextid=wwXIfr"
-          target="_blank"
-          whileTap={{ scale: 0.9 }}
-          className="text-black/60 active:text-black"
-        >
-          <Facebook className="w-5 h-5" />
-        </motion.a>
+      <motion.a
+        href="https://www.facebook.com/share/1CqfvBfBzs/?mibextid=wwXIfr"
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ scale: 1.15, x: 3 }}
+        whileTap={{ scale: 0.92 }}
+        className="text-black/50 transition hover:text-black"
+      >
+        <Facebook className="h-4 w-4 md:h-5 md:w-5" />
+      </motion.a>
 
-        {/* LinkedIn */}
-        <motion.a
-          href="https://www.linkedin.com/in/soe-min-khant-1a138534b"
-          target="_blank"
-          whileTap={{ scale: 0.9 }}
-          className="text-black/60 active:text-black"
-        >
-          <Linkedin className="w-5 h-5" />
-        </motion.a>
-      </motion.div>
-    </>
+      <motion.a
+        href="https://www.linkedin.com/in/soe-min-khant-1a138534b"
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ scale: 1.15, x: 3 }}
+        whileTap={{ scale: 0.92 }}
+        className="text-black/50 transition hover:text-black"
+      >
+        <Linkedin className="h-4 w-4 md:h-5 md:w-5" />
+      </motion.a>
+
+      <div className="h-12 w-[1px] bg-black/20 md:h-20" />
+    </div>
   );
 };
 

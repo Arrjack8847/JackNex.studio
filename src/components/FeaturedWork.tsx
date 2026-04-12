@@ -39,6 +39,25 @@ const projects = [
     ],
     link: "https://power-house-coral.vercel.app/",
   },
+
+  {
+  title: "Cinematic Wedding Invitation Website",
+  category: "Wedding Website",
+  tags: ["React", "Framer Motion", "Responsive"],
+  description:
+    "A cinematic wedding invitation website designed to turn a love story into an interactive digital experience. Featuring smooth animations, elegant UI, and fully optimized mobile design.",
+  desktopImages: [
+    "/projects/project3/project1.webp",
+    "/projects/project3/project2.webp",
+    "/projects/project3/project3.webp",
+  ],
+  mobileImages: [
+    "/projects/project3/pproject1.webp",
+    "/projects/project3/pproject2.webp",
+    "/projects/project3/pproject3.webp",
+  ],
+  link: "https://wedding-invation1.vercel.app/",
+}
 ];
 
 const AUTOPLAY_MS = 3200;

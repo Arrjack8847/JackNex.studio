@@ -1,144 +1,382 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
+
+import { siteConfig } from "@/config/site";
+import { useAnimationSettings } from "@/hooks/use-animation-settings";
+import { usePageVisible } from "@/hooks/use-page-visible";
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+
+type HeroParticle = {
+  id: string;
+  left: number;
+  top: number;
+  size: number;
+  delay: number;
+};
+
+function createHeroParticles(count: number): HeroParticle[] {
+  return Array.from({ length: count }, (_, index) => ({
+    id: `hero-particle-${index}`,
+    left: (index * 13 + 17) % 100,
+    top: (index * 19 + 11) % 100,
+    size: index % 3 === 0 ? 6 : 4,
+    delay: index * 0.12,
+  }));
+}
 
 export default function Hero() {
-  const [isMobile, setIsMobile] = useState(false);
+  const settings = useAnimationSettings();
+  const isPageVisible = usePageVisible();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const shouldAnimate = isPageVisible && !prefersReducedMotion;
 
-  const smoothX = useSpring(mouseX, { stiffness: 80, damping: 20, mass: 0.5 });
-  const smoothY = useSpring(mouseY, { stiffness: 80, damping: 20, mass: 0.5 });
+  const shouldUseParallax =
+    settings.enableParallax &&
+    isPageVisible &&
+    !prefersReducedMotion;
 
-  const imgX = useTransform(smoothX, [0, 1600], [-12, 12]);
-  const imgY = useTransform(smoothY, [0, 1000], [-10, 10]);
+  const mouseX = useMotionValue(800);
+  const mouseY = useMotionValue(500);
 
-  // detect mobile
+  const smoothX = useSpring(mouseX, {
+    stiffness: 80,
+    damping: 20,
+    mass: 0.5,
+  });
+
+  const smoothY = useSpring(mouseY, {
+    stiffness: 80,
+    damping: 20,
+    mass: 0.5,
+  });
+
+  const imageX = useTransform(smoothX, [0, 1600], [-12, 12]);
+  const imageY = useTransform(smoothY, [0, 1000], [-10, 10]);
+
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+    if (!shouldUseParallax) {
+      return;
+    }
 
-  // mouse only (NO TOUCH)
-  useEffect(() => {
-    if (isMobile) return;
-
-    const handleMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+    const handleMouseMove = (event: MouseEvent) => {
+      mouseX.set(event.clientX);
+      mouseY.set(event.clientY);
     };
 
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, [isMobile]);
+    window.addEventListener("mousemove", handleMouseMove, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [mouseX, mouseY, shouldUseParallax]);
+
+  const heroParticles = useMemo(
+    () => createHeroParticles(settings.heroParticleCount),
+    [settings.heroParticleCount],
+  );
+
+  const isMobileProfile = settings.profile === "mobile";
+  const particleTravel = isMobileProfile ? 8 : 12;
 
   return (
-    <section className="relative min-h-screen overflow-hidden text-black">
-      <div className="relative z-10 mx-auto grid min-h-screen max-w-[1600px] grid-cols-1 lg:grid-cols-2">
+    <section
+      id="top"
+      className="font-inter relative min-h-[100svh] scroll-mt-24 overflow-hidden bg-[#f4f3ef] text-black"
+    >
+      {/* Background decorations */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-40 top-20 h-[420px] w-[420px] rounded-full bg-white/70 blur-[100px]"
+      />
 
-        {/* LEFT */}
-        <div className="flex items-center px-5 pb-12 pt-28 sm:px-8 md:px-12 lg:px-16 xl:px-20">
-          <div className="max-w-[680px]">
-            <motion.p
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-4 text-[10px] uppercase tracking-[0.45em] text-black/40 sm:text-xs"
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-[35%] h-[320px] w-[320px] rounded-full bg-black/[0.025] blur-[100px]"
+      />
+
+      <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] grid-cols-1 lg:grid-cols-2">
+        {/* Text section */}
+        <div className="flex items-center px-5 pb-14 pt-28 sm:px-8 sm:pb-16 md:px-12 lg:px-16 lg:py-24 xl:px-20">
+          <div className="w-full max-w-[720px]">
+            <motion.div
+              initial={
+                prefersReducedMotion
+                  ? false
+                  : {
+                      opacity: 0,
+                      y: 20,
+                    }
+              }
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.5,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="mb-6 flex items-center gap-3"
             >
-              JackNex Studio
-            </motion.p>
+              <span
+                aria-hidden="true"
+                className="h-px w-8 bg-black/30 sm:w-10"
+              />
+
+              <p className="text-[10px] font-medium uppercase tracking-[0.42em] text-black/45 sm:text-xs">
+                JackNex Studio
+              </p>
+            </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="max-w-[8ch] text-[3rem] font-semibold leading-[0.9] tracking-[-0.06em] sm:text-[4.2rem] md:text-[5.4rem] lg:text-[6.3rem] xl:text-[7rem]"
+              initial={
+                prefersReducedMotion
+                  ? false
+                  : {
+                      opacity: 0,
+                      y: 32,
+                    }
+              }
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.8,
+                delay: prefersReducedMotion ? 0 : 0.08,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="font-space-grotesk max-w-[10ch] text-[3.1rem] font-semibold leading-[0.9] tracking-[-0.065em] sm:text-[4.3rem] md:text-[5.4rem] lg:text-[5.8rem] xl:text-[7rem]"
             >
-              I build websites that make brands look premium.
+              I build websites that make brands look{" "}
+              <span className="font-instrument-serif inline-block font-normal italic tracking-[-0.035em]">
+                premium.
+              </span>
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="mt-6 max-w-[620px] text-sm leading-7 text-black/55 sm:text-base md:text-lg"
+              initial={
+                prefersReducedMotion
+                  ? false
+                  : {
+                      opacity: 0,
+                      y: 24,
+                    }
+              }
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.7,
+                delay: prefersReducedMotion ? 0 : 0.18,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="mt-7 max-w-[610px] text-sm leading-7 tracking-[-0.01em] text-black/55 sm:text-base md:text-lg md:leading-8"
             >
               Clean, modern, conversion-focused websites for personal brands,
               businesses, and creative projects that want to stand out online.
             </motion.p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <motion.div
+              initial={
+                prefersReducedMotion
+                  ? false
+                  : {
+                      opacity: 0,
+                      y: 20,
+                    }
+              }
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.65,
+                delay: prefersReducedMotion ? 0 : 0.28,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4"
+            >
               <a
                 href="#work"
-                className="group inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm text-white transition hover:scale-[1.03]"
+                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition duration-300 hover:scale-[1.03] hover:bg-black/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
               >
                 View Work
-                <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
               </a>
 
               <a
-                href="https://wa.me/60175052024"
+                href={siteConfig.contact.whatsapp.href}
                 target="_blank"
-                className="inline-flex items-center rounded-full border border-black/15 bg-white/60 px-6 py-3 text-sm backdrop-blur-sm transition hover:scale-[1.03]"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-black/15 bg-white/50 px-6 py-3 text-sm font-medium backdrop-blur-md transition duration-300 hover:scale-[1.03] hover:border-black/30 hover:bg-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
               >
-                Book A Call
+                {siteConfig.contact.whatsapp.label}
               </a>
-            </div>
+            </motion.div>
+
+            <motion.div
+              initial={
+                prefersReducedMotion
+                  ? false
+                  : {
+                      opacity: 0,
+                    }
+              }
+              animate={{
+                opacity: 1,
+              }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.8,
+                delay: prefersReducedMotion ? 0 : 0.45,
+              }}
+              className="mt-12 flex items-center gap-5 text-[10px] font-medium uppercase tracking-[0.25em] text-black/35 sm:text-[11px]"
+            >
+              <span>Web Design</span>
+
+              <span className="h-1 w-1 rounded-full bg-black/30" />
+
+              <span>Development</span>
+
+              <span className="hidden h-1 w-1 rounded-full bg-black/30 sm:block" />
+
+              <span className="hidden sm:inline">Creative Direction</span>
+            </motion.div>
           </div>
         </div>
 
-        {/* RIGHT */}
+        {/* Image section */}
         <div className="relative h-[70vh] w-full overflow-hidden sm:h-[80vh] lg:h-screen">
+          <motion.div
+            className="absolute -inset-4"
+            style={
+              shouldUseParallax
+                ? {
+                    x: imageX,
+                    y: imageY,
+                  }
+                : undefined
+            }
+          >
+            <motion.img
+              src="/hero-man.webp"
+              alt="JackNex Studio designer and developer portrait"
+              width={1280}
+              height={739}
+              loading="eager"
+              decoding="async"
+              draggable={false}
+              className="h-full w-full select-none object-cover grayscale"
+              animate={
+                shouldAnimate
+                  ? {
+                      scale: [
+                        1.02,
+                        isMobileProfile ? 1.03 : 1.045,
+                        1.02,
+                      ],
+                    }
+                  : {
+                      scale: 1.02,
+                    }
+              }
+              transition={{
+                duration: shouldAnimate
+                  ? isMobileProfile
+                    ? 8
+                    : 10
+                  : 0,
+                repeat: shouldAnimate ? Infinity : 0,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
 
-          <motion.img
-            src="/hero-man.webp"
-            className="absolute inset-0 h-full w-full object-cover grayscale gpu"
-            
-            // desktop interaction
-            style={!isMobile ? { x: imgX, y: imgY } : {}}
-
-            // mobile = smooth floating only
-            animate={{
-  y: isMobile ? [0, -5, 0] : [0, -6, 0],
-  scale: isMobile ? [1, 1.01, 1] : [1, 1.02, 1],
-}}
-
-            transition={{
-  duration: isMobile ? 8 : 10,
-  repeat: Infinity,
-  ease: "easeInOut",
-}}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/20 via-transparent to-transparent"
           />
 
-          {/* particles (reduced for mobile) */}
-          <div className="absolute inset-0 z-[2] pointer-events-none">
-            {[...Array(isMobile ? 6 : 10)].map((_, i) => (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#f4f3ef]/25 via-transparent to-transparent lg:from-[#f4f3ef]/15"
+          />
+
+          {/* Particles */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[2]"
+          >
+            {heroParticles.map((particle) => (
               <motion.span
-                key={i}
+                key={particle.id}
                 className="absolute block rounded-full bg-black/20"
                 style={{
-                  width: isMobile ? 4 : 6,
-                  height: isMobile ? 4 : 6,
-                  left: `${(i * 13 + 17) % 100}%`,
-                  top: `${(i * 19 + 11) % 100}%`,
+                  width: particle.size,
+                  height: particle.size,
+                  left: `${particle.left}%`,
+                  top: `${particle.top}%`,
+                  willChange: shouldAnimate
+                    ? "transform, opacity"
+                    : "auto",
                 }}
-                animate={{
-                  y: [0, isMobile ? -8 : -12, 0],
-                  x: [0, 6, -4, 0],
-                  opacity: [0.2, 0.4, 0.2],
-                }}
+                animate={
+                  shouldAnimate
+                    ? {
+                        y: [0, -particleTravel, 0],
+                        x: [0, 6, -4, 0],
+                        opacity: [0.18, 0.42, 0.18],
+                      }
+                    : {
+                        x: 0,
+                        y: 0,
+                        opacity: 0.2,
+                      }
+                }
                 transition={{
-                  duration: 6,
-                  repeat: Infinity,
+                  duration: shouldAnimate ? 6 : 0,
+                  repeat: shouldAnimate ? Infinity : 0,
                   ease: "easeInOut",
+                  delay: particle.delay,
                 }}
               />
             ))}
           </div>
 
+          <motion.div
+            initial={
+              prefersReducedMotion
+                ? false
+                : {
+                    opacity: 0,
+                    y: 20,
+                  }
+            }
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.7,
+              delay: prefersReducedMotion ? 0 : 0.5,
+            }}
+            className="absolute bottom-5 left-5 z-[3] rounded-full border border-white/20 bg-black/20 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.25em] text-white backdrop-blur-md sm:bottom-8 sm:left-8"
+          >
+            Designer × Developer
+          </motion.div>
         </div>
       </div>
     </section>

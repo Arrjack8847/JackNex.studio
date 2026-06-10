@@ -1,56 +1,9 @@
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
-
-const packages = [
-  {
-    title: "Starter Website",
-    subtitle: "Perfect for small businesses and personal brands.",
-    price: "RM 599 – RM 999",
-    delivery: "3–5 Days",
-    revisions: "2 Revision Rounds",
-    features: [
-      "Up to 3 Pages",
-      "Mobile Responsive Design",
-      "Clean Modern Layout",
-      "Basic SEO Structure",
-    ],
-    highlighted: false,
-  },
-  {
-    title: "Business Website",
-    subtitle: "Best for growing brands that need a stronger online presence.",
-    price: "RM 1299 – RM 1999",
-    delivery: "5–10 Days",
-    revisions: "4 Revision Rounds",
-    features: [
-      "Up to 8 Pages",
-      "Custom UI/UX Design",
-      "Performance Optimization",
-      "SEO-Ready Structure",
-      "Conversion-Focused Layout",
-    ],
-    highlighted: true,
-  },
-  {
-    title: "Premium Website",
-    subtitle: "For brands that want a custom, high-end experience.",
-    price: "RM 2999+",
-    delivery: "10–21 Days",
-    revisions: "Unlimited Revisions*",
-    features: [
-      "Fully Custom Website",
-      "Advanced Animations",
-      "AI / Automation Features",
-      "Scalable Architecture",
-      "Premium Visual Direction",
-    ],
-    highlighted: false,
-  },
-];
-
-const whatsappLink =
-  "https://wa.me/60175052024?text=Hi%2C%20I%E2%80%99m%20interested%20in%20your%20website%20service.%20I%E2%80%99d%20like%20to%20start%20a%20project.%20Here%E2%80%99s%20a%20short%20idea%20of%20what%20I%20need%3A";
+import { servicePackages, siteConfig } from "@/config/site";
+import { useAnimationSettings } from "@/hooks/use-animation-settings";
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 type PackageCardProps = {
   title: string;
@@ -58,7 +11,7 @@ type PackageCardProps = {
   price: string;
   delivery: string;
   revisions: string;
-  features: string[];
+  features: readonly string[];
   highlighted?: boolean;
   index: number;
 };
@@ -74,40 +27,37 @@ function PackageCard({
   index,
 }: PackageCardProps) {
   const [isHovering, setIsHovering] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const settings = useAnimationSettings();
+  const canTilt = settings.hasFinePointer && !prefersReducedMotion;
 
   const rawRotateX = useMotionValue(0);
   const rawRotateY = useMotionValue(0);
 
   const rotateX = useSpring(rawRotateX, {
-  stiffness: 240,
-  damping: 16,
-  mass: 0.45,
-});
+    stiffness: 240,
+    damping: 16,
+    mass: 0.45,
+  });
 
-const rotateY = useSpring(rawRotateY, {
-  stiffness: 240,
-  damping: 16,
-  mass: 0.45,
-});
+  const rotateY = useSpring(rawRotateY, {
+    stiffness: 240,
+    damping: 16,
+    mass: 0.45,
+  });
 
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (!canTilt) {
+      return;
+    }
 
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.innerWidth < 1024) return;
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const centerX = width / 2;
-    const centerY = height / 2;
-
+    const rect = event.currentTarget.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
     const percentX = (mouseX - centerX) / centerX;
     const percentY = (mouseY - centerY) / centerY;
-
     const maxTilt = 4;
 
     rawRotateY.set(percentX * maxTilt);
@@ -122,28 +72,30 @@ const rotateY = useSpring(rawRotateY, {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 34 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 34 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay: index * 0.08 }}
-      whileHover={{ y: -8, scale: 1.01 }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : 0.55,
+        delay: prefersReducedMotion ? 0 : index * 0.08,
+      }}
+      whileHover={canTilt ? { y: -8, scale: 1.01 } : undefined}
       whileTap={{ scale: 0.992 }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       style={{
-        rotateX,
-        rotateY,
+        rotateX: canTilt ? rotateX : 0,
+        rotateY: canTilt ? rotateY : 0,
         transformStyle: "preserve-3d",
-        willChange: "transform",
+        willChange: canTilt ? "transform" : "auto",
       }}
-      className={`group relative overflow-hidden rounded-[24px] sm:rounded-[28px] border p-5 sm:p-6 lg:p-8 ${
+      className={`group relative overflow-hidden rounded-[24px] border p-5 sm:rounded-[28px] sm:p-6 lg:p-8 ${
         highlighted
           ? "border-black bg-black text-white shadow-[0_18px_60px_rgba(0,0,0,0.22)]"
           : "border-black/10 bg-white text-black shadow-[0_10px_35px_rgba(0,0,0,0.05)]"
       }`}
     >
-      {/* base gradient */}
       <div
         className={`pointer-events-none absolute inset-0 rounded-[24px] sm:rounded-[28px] ${
           highlighted
@@ -152,12 +104,11 @@ const rotateY = useSpring(rawRotateY, {
         }`}
       />
 
-      {/* subtle premium shine */}
       <motion.div
         animate={{
-          opacity: isHovering ? 1 : 0.7,
-          x: isHovering ? "8%" : "0%",
-          y: isHovering ? "-4%" : "0%",
+          opacity: isHovering && canTilt ? 1 : 0.7,
+          x: isHovering && canTilt ? "8%" : "0%",
+          y: isHovering && canTilt ? "-4%" : "0%",
         }}
         transition={{ duration: 0.45, ease: "easeOut" }}
         className="pointer-events-none absolute inset-0 hidden lg:block"
@@ -169,38 +120,36 @@ const rotateY = useSpring(rawRotateY, {
         />
       </motion.div>
 
-      {/* border glow */}
       <div
-        className={`pointer-events-none absolute inset-0 rounded-[24px] sm:rounded-[28px] ring-1 ${
+        className={`pointer-events-none absolute inset-0 rounded-[24px] ring-1 transition-all duration-300 sm:rounded-[28px] ${
           highlighted
             ? "ring-white/10 group-hover:ring-white/20"
             : "ring-black/5 group-hover:ring-black/10"
-        } transition-all duration-300`}
+        }`}
       />
 
-      {/* top edge light */}
       <div
-        className={`pointer-events-none absolute inset-x-5 sm:inset-x-6 top-0 h-px ${
+        className={`pointer-events-none absolute inset-x-5 top-0 h-px sm:inset-x-6 ${
           highlighted ? "bg-white/20" : "bg-black/10"
         }`}
       />
 
       <div
         className="relative z-10 flex h-full flex-col"
-        style={{ transform: "translateZ(20px)" }}
+        style={{ transform: canTilt ? "translateZ(20px)" : undefined }}
       >
         {highlighted && (
-          <div className="mb-4 sm:mb-5 inline-flex w-fit rounded-full border border-white/15 px-3 py-1 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.18em] text-white/90">
+          <div className="mb-4 inline-flex w-fit rounded-full border border-white/15 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-white/90 sm:mb-5 sm:text-[11px]">
             Most Popular
           </div>
         )}
 
         <div className="mb-5 sm:mb-6">
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
+          <h3 className="text-xl font-bold tracking-tight sm:text-2xl">
             {title}
           </h3>
           <p
-            className={`mt-2 sm:mt-3 text-sm leading-relaxed ${
+            className={`mt-2 text-sm leading-relaxed sm:mt-3 ${
               highlighted ? "text-white/72" : "text-black/60"
             }`}
           >
@@ -209,13 +158,13 @@ const rotateY = useSpring(rawRotateY, {
         </div>
 
         <div className="mb-5 sm:mb-6">
-          <div className="text-2xl sm:text-3xl font-bold tracking-tight">
+          <div className="text-2xl font-bold tracking-tight sm:text-3xl">
             {price}
           </div>
         </div>
 
         <div
-          className={`mb-6 sm:mb-7 space-y-2 text-sm ${
+          className={`mb-6 space-y-2 text-sm sm:mb-7 ${
             highlighted ? "text-white/78" : "text-black/65"
           }`}
         >
@@ -223,7 +172,7 @@ const rotateY = useSpring(rawRotateY, {
           <p>{revisions}</p>
         </div>
 
-        <div className="mb-7 sm:mb-8 flex-1 space-y-3">
+        <div className="mb-7 flex-1 space-y-3 sm:mb-8">
           {features.map((feature) => (
             <div key={feature} className="flex items-start gap-3">
               <div
@@ -237,6 +186,7 @@ const rotateY = useSpring(rawRotateY, {
                   className={`h-3 w-3 ${
                     highlighted ? "text-white" : "text-black"
                   }`}
+                  aria-hidden="true"
                 />
               </div>
 
@@ -252,19 +202,19 @@ const rotateY = useSpring(rawRotateY, {
         </div>
 
         <motion.a
-          href={whatsappLink}
+          href={siteConfig.contact.whatsapp.href}
           target="_blank"
           rel="noopener noreferrer"
-          whileHover={{ scale: 1.015 }}
+          whileHover={prefersReducedMotion ? undefined : { scale: 1.015 }}
           whileTap={{ scale: 0.985 }}
           className={`inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-medium transition-all duration-300 sm:w-auto ${
             highlighted
-              ? "bg-white text-black hover:bg-white/92"
-              : "bg-black text-white hover:bg-black/92"
+              ? "bg-white text-black hover:bg-white/90"
+              : "bg-black text-white hover:bg-black/90"
           }`}
         >
           <span>Start Your Project</span>
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </motion.a>
       </div>
     </motion.div>
@@ -272,38 +222,51 @@ const rotateY = useSpring(rawRotateY, {
 }
 
 const Services = () => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   return (
-    <section id="services" className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
+    <section
+      id="services"
+      className="relative scroll-mt-24 overflow-hidden py-20 sm:py-24 lg:py-28"
+      aria-labelledby="services-title"
+    >
       <div className="pointer-events-none absolute inset-0">
         <motion.div
-          animate={{ scale: [1, 1.04, 1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-1/2 top-24 sm:top-32 h-[280px] w-[280px] sm:h-[420px] sm:w-[420px] lg:h-[520px] lg:w-[520px] -translate-x-1/2 rounded-full bg-black/[0.03] blur-[90px] sm:blur-[120px] lg:blur-[150px]"
+          animate={prefersReducedMotion ? { scale: 1 } : { scale: [1, 1.04, 1] }}
+          transition={{
+            duration: prefersReducedMotion ? 0 : 12,
+            repeat: prefersReducedMotion ? 0 : Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute left-1/2 top-24 h-[280px] w-[280px] -translate-x-1/2 rounded-full bg-black/[0.03] blur-[90px] sm:top-32 sm:h-[420px] sm:w-[420px] sm:blur-[120px] lg:h-[520px] lg:w-[520px] lg:blur-[150px]"
         />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 22 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 sm:mb-14 lg:mb-16 text-center"
+          transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
+          className="mb-12 text-center sm:mb-14 lg:mb-16"
         >
           <div className="mb-4 flex items-center justify-center gap-3">
-            <div className="h-[2px] w-6 sm:w-8 bg-black" />
-            <span className="text-[11px] sm:text-sm font-medium uppercase tracking-[0.18em] text-black">
+            <div className="h-[2px] w-6 bg-black sm:w-8" />
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-black sm:text-sm">
               Website Packages
             </span>
-            <div className="h-[2px] w-6 sm:w-8 bg-black" />
+            <div className="h-[2px] w-6 bg-black sm:w-8" />
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black leading-tight">
+          <h2
+            id="services-title"
+            className="text-3xl font-bold leading-tight tracking-tight text-black sm:text-4xl md:text-5xl"
+          >
             Choose the Right Package
             <br className="hidden sm:block" /> for Your Business
           </h2>
 
-          <p className="mx-auto mt-4 sm:mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-black/60 px-2 sm:px-0">
+          <p className="mx-auto mt-4 max-w-2xl px-2 text-sm leading-relaxed text-black/60 sm:mt-5 sm:px-0 sm:text-base">
             Clear offers, faster delivery, and a smoother client experience.
             Built to help your brand look professional and convert better.
           </p>
@@ -313,7 +276,7 @@ const Services = () => {
           className="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-3"
           style={{ perspective: "1400px" }}
         >
-          {packages.map((pkg, i) => (
+          {servicePackages.map((pkg, index) => (
             <PackageCard
               key={pkg.title}
               title={pkg.title}
@@ -323,20 +286,20 @@ const Services = () => {
               revisions={pkg.revisions}
               features={pkg.features}
               highlighted={pkg.highlighted}
-              index={i}
+              index={index}
             />
           ))}
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6 }}
-          className="mt-10 sm:mt-12 text-center"
+          transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
+          className="mt-10 text-center sm:mt-12"
         >
-          <p className="mx-auto max-w-3xl text-xs sm:text-sm leading-relaxed text-black/55 px-2 sm:px-0">
-            *Unlimited revisions apply within project scope and timeline.
+          <p className="mx-auto max-w-3xl px-2 text-xs leading-relaxed text-black/55 sm:px-0 sm:text-sm">
+            Revision rounds apply within the agreed project scope and timeline.
             Delivery time depends on client response speed and project
             requirements.
           </p>

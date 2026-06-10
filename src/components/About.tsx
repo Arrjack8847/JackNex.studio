@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { aboutStats } from "@/config/site";
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 const skills = [
   "React",
@@ -13,19 +15,15 @@ const skills = [
   "UI/UX",
 ];
 
-const stats = [
-  { value: "10+", label: "Projects Built" },
-  { value: "Modern", label: "Design Style" },
-  { value: "Fast", label: "Delivery Focus" },
-];
-
 const About = () => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   return (
     <section
       id="about"
-      className="relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      className="relative scroll-mt-24 overflow-hidden py-20 sm:py-24 lg:py-28"
+      aria-labelledby="about-title"
     >
-      {/* background glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-[-5rem] top-10 h-44 w-44 rounded-full bg-primary/8 blur-[70px] sm:left-[-4rem] sm:top-16 sm:h-72 sm:w-72 sm:blur-[110px]" />
         <div className="absolute right-[-5rem] bottom-0 h-44 w-44 rounded-full bg-primary/6 blur-[75px] sm:right-[-4rem] sm:bottom-10 sm:h-72 sm:w-72 sm:blur-[120px]" />
@@ -33,45 +31,56 @@ const About = () => {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* left image side */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.7 }}
             className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none"
           >
             <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              animate={prefersReducedMotion ? { y: 0 } : { y: [0, -8, 0] }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 6,
+                repeat: prefersReducedMotion ? 0 : Infinity,
+                ease: "easeInOut",
+              }}
               className="relative aspect-[4/5] overflow-hidden rounded-[24px] border border-border/60 bg-background shadow-[0_14px_40px_rgba(0,0,0,0.08)] sm:rounded-[30px] sm:shadow-[0_20px_80px_rgba(0,0,0,0.10)]"
             >
-              {/* image */}
               <motion.img
                 src="/hero-man.webp"
-                alt="Portrait"
+                alt="JackNex Studio designer and developer portrait"
+                width={1280}
+                height={739}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover grayscale gpu smooth-transform"
-                animate={{ scale: [1, 1.02, 1] }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                animate={
+                  prefersReducedMotion ? { scale: 1 } : { scale: [1, 1.02, 1] }
+                }
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 10,
+                  repeat: prefersReducedMotion ? 0 : Infinity,
+                  ease: "easeInOut",
+                }}
               />
 
-              {/* overlays */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
               <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),transparent_42%,rgba(255,255,255,0.02))]" />
-
-              {/* border light */}
               <div className="pointer-events-none absolute inset-0 rounded-[24px] ring-1 ring-white/10 sm:rounded-[30px]" />
 
-              {/* bottom info card */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.6,
+                  delay: prefersReducedMotion ? 0 : 0.2,
+                }}
                 className="absolute bottom-3 left-3 right-3 rounded-2xl border border-white/15 bg-black/35 p-4 backdrop-blur-md sm:bottom-5 sm:left-5 sm:right-5 sm:p-5"
               >
                 <p className="text-[10px] uppercase tracking-[0.16em] text-white/70 sm:text-[11px] sm:tracking-[0.18em]">
-                  Developer • Designer
+                  Developer / Designer
                 </p>
                 <h3 className="mt-2 text-lg font-semibold text-white sm:text-2xl">
                   Building premium websites
@@ -83,17 +92,23 @@ const About = () => {
               </motion.div>
             </motion.div>
 
-            {/* floating badge */}
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ y: [0, -6, 0] }}
+              animate={prefersReducedMotion ? { y: 0 } : { y: [0, -6, 0] }}
               transition={{
-                opacity: { duration: 0.5, delay: 0.3 },
-                y: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
+                opacity: {
+                  duration: prefersReducedMotion ? 0 : 0.5,
+                  delay: prefersReducedMotion ? 0 : 0.3,
+                },
+                y: {
+                  duration: prefersReducedMotion ? 0 : 4.5,
+                  repeat: prefersReducedMotion ? 0 : Infinity,
+                  ease: "easeInOut",
+                },
               }}
               viewport={{ once: true }}
-              className="absolute -bottom-4 right-1 rounded-2xl border border-border/60 bg-background/90 px-4 py-3 backdrop-blur-md shadow-[0_10px_24px_rgba(0,0,0,0.10)] sm:-bottom-5 sm:-right-3 sm:px-5 sm:py-4 sm:shadow-[0_12px_35px_rgba(0,0,0,0.12)]"
+              className="absolute -bottom-4 right-1 rounded-2xl border border-border/60 bg-background/90 px-4 py-3 shadow-[0_10px_24px_rgba(0,0,0,0.10)] backdrop-blur-md sm:-bottom-5 sm:-right-3 sm:px-5 sm:py-4 sm:shadow-[0_12px_35px_rgba(0,0,0,0.12)]"
             >
               <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground sm:text-xs sm:tracking-[0.16em]">
                 Current Focus
@@ -104,12 +119,11 @@ const About = () => {
             </motion.div>
           </motion.div>
 
-          {/* right content */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.7 }}
             className="flex flex-col gap-5 sm:gap-6"
           >
             <div className="flex items-center gap-3">
@@ -119,7 +133,10 @@ const About = () => {
               </span>
             </div>
 
-            <h2 className="text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-5xl">
+            <h2
+              id="about-title"
+              className="text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-5xl"
+            >
               I design and build
               <span className="block text-primary">
                 modern digital experiences
@@ -127,7 +144,7 @@ const About = () => {
             </h2>
 
             <p className="text-sm leading-7 text-muted-foreground sm:text-lg sm:leading-relaxed">
-              I’m a developer and designer focused on creating modern websites
+              I'm a developer and designer focused on creating modern websites
               that look polished, feel smooth, and help brands present
               themselves with confidence online.
             </p>
@@ -139,15 +156,17 @@ const About = () => {
               but also effective.
             </p>
 
-            {/* stats */}
             <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-3 sm:gap-4 sm:pt-2">
-              {stats.map((stat, index) => (
+              {aboutStats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, y: 18 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: index * 0.08 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.45,
+                    delay: prefersReducedMotion ? 0 : index * 0.08,
+                  }}
                   className="rounded-2xl border border-border/60 bg-secondary/40 px-4 py-4 sm:px-5"
                 >
                   <div className="text-xl font-bold text-foreground sm:text-2xl">
@@ -160,7 +179,6 @@ const About = () => {
               ))}
             </div>
 
-            {/* skills */}
             <div className="pt-1 sm:pt-2">
               <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground sm:text-sm sm:tracking-[0.18em]">
                 Tools & Skills
@@ -170,11 +188,14 @@ const About = () => {
                 {skills.map((skill, index) => (
                   <motion.span
                     key={skill}
-                    initial={{ opacity: 0, y: 14 }}
+                    initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: index * 0.04 }}
-                    whileHover={{ y: -3, scale: 1.04 }}
+                    transition={{
+                      duration: prefersReducedMotion ? 0 : 0.35,
+                      delay: prefersReducedMotion ? 0 : index * 0.04,
+                    }}
+                    whileHover={prefersReducedMotion ? undefined : { y: -3, scale: 1.04 }}
                     className="rounded-full border border-border/60 bg-background px-3.5 py-2 text-xs font-medium text-foreground shadow-sm sm:px-4 sm:text-sm"
                   >
                     {skill}

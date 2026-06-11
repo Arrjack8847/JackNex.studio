@@ -125,6 +125,6 @@ describe("portfolio website", () => {
         name: "I build websites that make brands look premium.",
       }),
     ).toBeVisible();
-    expect(screen.getByRole("heading", { name: "Choose the Right Package for Your Business" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "From First Idea to Final Launch" })).toBeVisible();
   });
 });

@@ -8,7 +8,7 @@ const App = () => (
   <BrowserRouter
     future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
   >
-    <div className="relative min-h-screen overflow-x-hidden bg-[#f6f6f4] text-black">
+    <div className="relative min-h-screen overflow-x-clip bg-[#f6f6f4] text-black">
       <GlobalBackground />
       <SocialSidebar />
 

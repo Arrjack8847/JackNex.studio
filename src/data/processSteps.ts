@@ -47,7 +47,7 @@ export const processSteps: ProcessStep[] = [
     number: "02",
     label: "ORGANIZE",
     title: "Planning",
-    duration: "2–3 Days",
+    duration: "1-2Days",
     description:
       "I organize the page structure, content, visual direction and development plan before building starts.",
     deliverables: ["Sitemap", "Content structure", "Visual direction"],
@@ -58,7 +58,7 @@ export const processSteps: ProcessStep[] = [
     number: "03",
     label: "CREATE",
     title: "Design & Development",
-    duration: "7-10 Days",
+    duration: "3-4 Days",
     description:
       "I design and build a responsive website that matches your brand and feels smooth on every screen.",
     deliverables: [
@@ -74,7 +74,7 @@ export const processSteps: ProcessStep[] = [
     number: "04",
     label: "IMPROVE",
     title: "Review & Refinement",
-    duration: "3–5 Days",
+    duration: "2-3 Days",
     description:
       "We review the website together, test important screens and improve the details that matter.",
     deliverables: [

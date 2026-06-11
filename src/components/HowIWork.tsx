@@ -1,304 +1,432 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 
-import MobileProcessTimeline from "@/components/process/MobileProcessTimeline";
-import ProcessNavigation from "@/components/process/ProcessNavigation";
-import ProcessPreview from "@/components/process/ProcessPreview";
-import ProcessProgress from "@/components/process/ProcessProgress";
 import {
-  processStepIds,
+  useRef,
+  useState,
+} from "react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
+import {
+  Check,
+  ChevronDown,
+  Clock3,
+  PanelsTopLeft,
+} from "lucide-react";
+
+import { ProcessVisual } from "@/components/process/ProcessPreview";
+import {
   processSteps,
   type ProcessStepId,
 } from "@/data/processSteps";
-import { useActiveProcessStep } from "@/hooks/useActiveProcessStep";
-import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
-const ACTIVATION_POINT = 0.38;
+export default function MobileProcessTimeline() {
+  const reduceMotion = useReducedMotion();
 
-export default function HowIWork() {
-  const activeStep = useActiveProcessStep(processStepIds);
-  const reduceMotion = usePrefersReducedMotion();
+  const [openStep, setOpenStep] =
+    useState<ProcessStepId | null>("discovery");
 
-  const [compactDesktop, setCompactDesktop] = useState(false);
+  const [previewStep, setPreviewStep] =
+    useState<ProcessStepId | null>(null);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(
-      "(min-width: 1024px) and (max-height: 850px)",
-    );
+  const stepRefs = useRef<
+    Partial<Record<ProcessStepId, HTMLElement | null>>
+  >({});
 
-    const updateLayout = () => {
-      setCompactDesktop(mediaQuery.matches);
-    };
+  const selectStep = (stepId: ProcessStepId) => {
+    const isAlreadyOpen = openStep === stepId;
 
-    updateLayout();
-    mediaQuery.addEventListener("change", updateLayout);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateLayout);
-    };
-  }, []);
-
-  const activeIndex = Math.max(
-    processSteps.findIndex((step) => step.id === activeStep),
-    0,
-  );
-
-  const scrollToStep = (id: ProcessStepId) => {
-    const target = document.querySelector<HTMLElement>(
-      `[data-process-step="${id}"]`,
-    );
-
-    if (!target) {
+    if (isAlreadyOpen) {
+      setOpenStep(null);
+      setPreviewStep(null);
       return;
     }
 
-    const activationOffset = window.innerHeight * ACTIVATION_POINT;
+    setOpenStep(stepId);
+    setPreviewStep(null);
 
-    const top =
-      target.getBoundingClientRect().top +
-      window.scrollY -
-      activationOffset;
+    window.setTimeout(() => {
+      stepRefs.current[stepId]?.scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    }, reduceMotion ? 0 : 80);
+  };
 
-    window.scrollTo({
-      top: Math.max(top, 0),
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
+  const togglePreview = (stepId: ProcessStepId) => {
+    setPreviewStep((current) =>
+      current === stepId ? null : stepId,
+    );
   };
 
   return (
-    <section
-      id="process"
-      className="relative scroll-mt-24 overflow-x-clip py-12 sm:py-16 lg:py-20"
-    >
-      {/* Background */}
+    <div className="relative mx-auto w-full max-w-2xl pl-8 sm:pl-12 lg:hidden">
+      {/* Vertical timeline */}
       <div
-        className="pointer-events-none absolute inset-0"
         aria-hidden="true"
-      >
-        <div className="absolute left-1/2 top-20 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-black/[0.025] blur-[120px] lg:h-[620px] lg:w-[620px] lg:blur-[170px]" />
+        className="pointer-events-none absolute bottom-7 left-[10px] top-7 w-px bg-black/10 sm:left-[15px]"
+      />
 
-        <div className="absolute inset-x-0 top-1/3 h-px bg-gradient-to-r from-transparent via-black/[0.05] to-transparent" />
-      </div>
+      <div className="space-y-3 sm:space-y-4">
+        {processSteps.map((step, index) => {
+          const open = openStep === step.id;
+          const featured = Boolean(step.featured);
+          const highlighted = featured && open;
+          const showPreview = previewStep === step.id;
+          const Icon = step.icon;
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        {/* Section heading */}
-        <motion.header
-          initial={
-            reduceMotion
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 22 }
-          }
-          animate={
-            reduceMotion
-              ? { opacity: 1, y: 0 }
-              : undefined
-          }
-          whileInView={
-            reduceMotion
-              ? undefined
-              : { opacity: 1, y: 0 }
-          }
-          viewport={{
-            once: true,
-            margin: "-80px",
-          }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.6,
-          }}
-          className={`mx-auto max-w-3xl text-center ${
-            compactDesktop
-              ? "mb-8"
-              : "mb-8 sm:mb-10 lg:mb-12"
-          }`}
-        >
-          <div className="mb-3 flex items-center justify-center gap-3">
-            <span
-              className="h-[2px] w-7 bg-black"
-              aria-hidden="true"
-            />
-
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-black sm:text-sm">
-              My Process
-            </span>
-
-            <span
-              className="h-[2px] w-7 bg-black"
-              aria-hidden="true"
-            />
-          </div>
-
-          <h2 className="text-3xl font-bold leading-tight tracking-[-0.035em] text-black sm:text-4xl md:text-5xl">
-            From First Idea to
-            <br className="hidden sm:block" /> Final Launch
-          </h2>
-
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-black/60 sm:text-base">
-            A clear, collaborative process that keeps your project organized,
-            creative and focused from the first discussion to delivery.
-          </p>
-        </motion.header>
-
-        {/* Desktop process */}
-        <div className="hidden items-start grid-cols-[0.76fr_1.24fr] gap-8 lg:grid xl:gap-10">
-          {/* Left navigation */}
-          <aside className="relative min-w-0 self-stretch">
-            <div
-              className={`sticky top-24 rounded-[28px] border border-black/10 bg-white/75 shadow-[0_18px_55px_rgba(0,0,0,0.05)] backdrop-blur-xl ${
-                compactDesktop ? "p-3.5 xl:p-4" : "p-5 xl:p-6"
-              }`}
+          return (
+            <motion.article
+              key={step.id}
+              ref={(element) => {
+                stepRefs.current[step.id] = element;
+              }}
+              layout={!reduceMotion}
+              initial={
+                reduceMotion
+                  ? false
+                  : {
+                      opacity: 0,
+                      y: 14,
+                    }
+              }
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                margin: "-25px",
+              }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.38,
+                delay: reduceMotion ? 0 : index * 0.035,
+              }}
+              className="relative min-w-0 scroll-mt-24"
             >
-              <p
-                className={`font-semibold uppercase tracking-[0.18em] text-black/40 ${
-                  compactDesktop ? "text-[10px]" : "text-xs"
+              {/* Timeline node */}
+              <span
+                aria-hidden="true"
+                className={`absolute -left-8 top-5 z-10 flex h-[21px] w-[21px] items-center justify-center rounded-full border-[4px] border-[#f6f6f4] transition-all duration-300 sm:-left-12 sm:top-6 sm:h-[31px] sm:w-[31px] sm:border-[5px] ${
+                  open
+                    ? "bg-black shadow-[0_5px_16px_rgba(0,0,0,0.18)]"
+                    : "bg-black/20"
                 }`}
               >
-                How the project moves
-              </p>
+                <span
+                  className={`rounded-full transition-all duration-300 ${
+                    open
+                      ? "h-2 w-2 bg-white"
+                      : "h-1.5 w-1.5 bg-white/80"
+                  }`}
+                />
+              </span>
 
-              <h3
-                className={`max-w-[13ch] font-bold leading-[1.02] tracking-[-0.045em] text-black ${
-                  compactDesktop
-                    ? "mt-2 text-[1.65rem]"
-                    : "mt-3 text-3xl xl:text-4xl"
+              <motion.div
+                layout={!reduceMotion}
+                className={`min-w-0 overflow-hidden rounded-[20px] border transition-colors duration-300 sm:rounded-[24px] ${
+                  highlighted
+                    ? "border-black bg-black text-white shadow-[0_16px_40px_rgba(0,0,0,0.16)]"
+                    : open
+                      ? "border-black/15 bg-white text-black shadow-[0_12px_32px_rgba(0,0,0,0.07)]"
+                      : "border-black/10 bg-white/85 text-black"
                 }`}
               >
-                One connected journey, five focused stages.
-              </h3>
+                {/* Step button */}
+                <button
+                  type="button"
+                  onClick={() => selectStep(step.id)}
+                  aria-expanded={open}
+                  aria-controls={`mobile-process-${step.id}`}
+                  className="flex min-h-[68px] w-full items-center gap-2.5 px-3.5 py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-inset sm:min-h-[82px] sm:gap-3 sm:px-5 sm:py-4"
+                >
+                  <div
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors sm:h-11 sm:w-11 ${
+                      highlighted
+                        ? "border-white/15 bg-white/10 text-white"
+                        : open
+                          ? "border-black bg-black text-white"
+                          : "border-black/10 bg-black/[0.035] text-black/55"
+                    }`}
+                  >
+                    <Icon
+                      className="h-4 w-4 sm:h-[18px] sm:w-[18px]"
+                      aria-hidden="true"
+                    />
+                  </div>
 
-              <p
-                className={`text-black/55 ${
-                  compactDesktop
-                    ? "mt-2 text-xs leading-5"
-                    : "mt-3 text-sm leading-6"
-                }`}
-              >
-                Scroll through the process or choose a stage to see what
-                happens and what you receive.
-              </p>
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={`truncate text-[8px] font-semibold uppercase tracking-[0.15em] sm:text-[10px] ${
+                        highlighted
+                          ? "text-white/45"
+                          : "text-black/40"
+                      }`}
+                    >
+                      {step.number} · {step.label}
+                    </p>
 
-              <div
-                className={
-                  compactDesktop
-                    ? "-mt-1 origin-top scale-[0.90]"
-                    : ""
-                }
-              >
-                <ProcessNavigation
-                  steps={processSteps}
-                  activeStep={activeStep}
-                  onSelect={scrollToStep}
-                />
-              </div>
+                    <h3
+                      className={`mt-1 text-sm font-bold leading-tight tracking-[-0.02em] sm:text-lg ${
+                        highlighted
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                    >
+                      {step.title}
+                    </h3>
+                  </div>
 
-              <div className={compactDesktop ? "-mt-5" : ""}>
-                <ProcessProgress
-                  activeIndex={activeIndex}
-                  total={processSteps.length}
-                />
-              </div>
-            </div>
-          </aside>
+                  <motion.span
+                    aria-hidden="true"
+                    animate={{
+                      rotate: open ? 180 : 0,
+                    }}
+                    transition={
+                      reduceMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: 0.24,
+                            ease: "easeOut",
+                          }
+                    }
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border sm:h-9 sm:w-9 ${
+                      highlighted
+                        ? "border-white/15 bg-white/10 text-white/70"
+                        : "border-black/10 bg-black/[0.025] text-black/50"
+                    }`}
+                  >
+                    <ChevronDown
+                      className="h-4 w-4"
+                      aria-hidden="true"
+                    />
+                  </motion.span>
+                </button>
 
-          {/* Right active preview */}
-          <div className="relative min-w-0">
-            <div className="sticky top-24 z-10 flex h-[calc(100dvh-7rem)] items-start">
-              <div
-                className={
-                  compactDesktop
-                    ? "w-[108.7%] origin-top-left scale-[0.92]"
-                    : "w-full"
-                }
-              >
-                <ProcessPreview activeStep={activeStep} />
-              </div>
-            </div>
+                {/* Expanded information */}
+                <AnimatePresence initial={false}>
+                  {open && (
+                    <motion.div
+                      id={`mobile-process-${step.id}`}
+                      initial={
+                        reduceMotion
+                          ? false
+                          : {
+                              height: 0,
+                              opacity: 0,
+                            }
+                      }
+                      animate={{
+                        height: "auto",
+                        opacity: 1,
+                      }}
+                      exit={
+                        reduceMotion
+                          ? undefined
+                          : {
+                              height: 0,
+                              opacity: 0,
+                            }
+                      }
+                      transition={{
+                        duration: reduceMotion ? 0 : 0.3,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      className="overflow-hidden"
+                    >
+                      <div
+                        className={`border-t px-3.5 pb-4 pt-3.5 sm:px-5 sm:pb-5 sm:pt-5 ${
+                          highlighted
+                            ? "border-white/10"
+                            : "border-black/10"
+                        }`}
+                      >
+                        {/* Timeline */}
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span
+                            className={`text-[8px] font-semibold uppercase tracking-[0.15em] sm:text-[10px] ${
+                              highlighted
+                                ? "text-white/45"
+                                : "text-black/40"
+                            }`}
+                          >
+                            Timeline
+                          </span>
 
-            {/* Invisible scroll activation areas */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none relative z-0 -mt-[calc(100dvh-7rem)]"
-            >
-              {processSteps.map((step) => (
-                <div
-                  key={step.id}
-                  data-process-step={step.id}
-                  className={
-                    compactDesktop
-                      ? "min-h-[68dvh]"
-                      : "min-h-[72dvh]"
-                  }
-                />
-              ))}
+                          <span
+                            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] sm:px-3 sm:text-[10px] ${
+                              highlighted
+                                ? "border-white/15 bg-white/[0.06] text-white/70"
+                                : "border-black/10 bg-black/[0.025] text-black/60"
+                            }`}
+                          >
+                            <Clock3
+                              className="h-3 w-3"
+                              aria-hidden="true"
+                            />
 
-              <div
-                className={
-                  compactDesktop ? "h-[20dvh]" : "h-[24dvh]"
-                }
-              />
-            </div>
-          </div>
-        </div>
+                            {step.duration}
+                          </span>
+                        </div>
 
-        {/* Mobile and tablet timeline */}
-        <div className="lg:hidden">
-          <MobileProcessTimeline />
-        </div>
+                        {/* Description */}
+                        <p
+                          className={`mt-3 text-[13px] leading-[1.6] sm:mt-4 sm:text-sm sm:leading-6 ${
+                            highlighted
+                              ? "text-white/65"
+                              : "text-black/60"
+                          }`}
+                        >
+                          {step.description}
+                        </p>
 
-        {/* Final CTA */}
-        <motion.div
-          initial={
-            reduceMotion
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 20 }
-          }
-          animate={
-            reduceMotion
-              ? { opacity: 1, y: 0 }
-              : undefined
-          }
-          whileInView={
-            reduceMotion
-              ? undefined
-              : { opacity: 1, y: 0 }
-          }
-          viewport={{
-            once: true,
-            margin: "-60px",
-          }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.6,
-          }}
-          className="mt-8 overflow-hidden rounded-[28px] border border-black/10 bg-white/85 p-5 shadow-[0_18px_55px_rgba(0,0,0,0.05)] backdrop-blur-xl sm:mt-10 sm:p-6 lg:mt-12 lg:flex lg:items-center lg:justify-between lg:gap-8 lg:p-7"
-        >
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-black/40">
-              Every project is different
-            </p>
+                        {/* Deliverables */}
+                        <div className="mt-4">
+                          <p
+                            className={`text-[8px] font-semibold uppercase tracking-[0.16em] sm:text-[10px] ${
+                              highlighted
+                                ? "text-white/40"
+                                : "text-black/40"
+                            }`}
+                          >
+                            You receive
+                          </p>
 
-            <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em] text-black sm:text-3xl">
-              Have an idea you want to build?
-            </h3>
+                          <div className="mt-2.5 grid grid-cols-1 gap-2 min-[500px]:grid-cols-2">
+                            {step.deliverables.map(
+                              (deliverable) => (
+                                <div
+                                  key={deliverable}
+                                  className={`flex min-w-0 items-start gap-2.5 rounded-xl border p-2.5 sm:p-3 ${
+                                    highlighted
+                                      ? "border-white/10 bg-white/[0.055]"
+                                      : "border-black/10 bg-black/[0.02]"
+                                  }`}
+                                >
+                                  <span
+                                    className={`mt-px flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
+                                      highlighted
+                                        ? "bg-white text-black"
+                                        : "bg-black text-white"
+                                    }`}
+                                  >
+                                    <Check
+                                      className="h-3 w-3"
+                                      aria-hidden="true"
+                                    />
+                                  </span>
 
-            <p className="mt-2 max-w-2xl text-sm leading-7 text-black/55 sm:text-base">
-              Tell me your goals, preferred style, required features and
-              expected timeline. I will help you choose the right approach.
-            </p>
-          </div>
+                                  <span
+                                    className={`min-w-0 text-xs leading-5 ${
+                                      highlighted
+                                        ? "text-white/75"
+                                        : "text-black/65"
+                                    }`}
+                                  >
+                                    {deliverable}
+                                  </span>
+                                </div>
+                              ),
+                            )}
+                          </div>
+                        </div>
 
-          <a
-            href="#contact"
-            className="group mt-5 inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-black/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 lg:mt-0"
-          >
-            Discuss Your Project
+                        {/* Optional visual preview */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            togglePreview(step.id)
+                          }
+                          aria-expanded={showPreview}
+                          aria-controls={`mobile-preview-${step.id}`}
+                          className={`mt-4 flex min-h-11 w-full items-center justify-between gap-3 rounded-xl border px-3.5 py-2.5 text-left text-xs font-semibold transition-colors ${
+                            highlighted
+                              ? "border-white/10 bg-white/[0.06] text-white/75 hover:bg-white/[0.1]"
+                              : "border-black/10 bg-black/[0.025] text-black/65 hover:bg-black/[0.05]"
+                          }`}
+                        >
+                          <span className="inline-flex items-center gap-2">
+                            <PanelsTopLeft
+                              className="h-4 w-4"
+                              aria-hidden="true"
+                            />
 
-            <ArrowRight
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              aria-hidden="true"
-            />
-          </a>
-        </motion.div>
+                            {showPreview
+                              ? "Hide stage preview"
+                              : "View stage preview"}
+                          </span>
+
+                          <motion.span
+                            aria-hidden="true"
+                            animate={{
+                              rotate: showPreview ? 180 : 0,
+                            }}
+                            transition={{
+                              duration: reduceMotion ? 0 : 0.2,
+                            }}
+                          >
+                            <ChevronDown className="h-4 w-4" />
+                          </motion.span>
+                        </button>
+
+                        <AnimatePresence initial={false}>
+                          {showPreview && (
+                            <motion.div
+                              id={`mobile-preview-${step.id}`}
+                              initial={
+                                reduceMotion
+                                  ? false
+                                  : {
+                                      height: 0,
+                                      opacity: 0,
+                                    }
+                              }
+                              animate={{
+                                height: "auto",
+                                opacity: 1,
+                              }}
+                              exit={
+                                reduceMotion
+                                  ? undefined
+                                  : {
+                                      height: 0,
+                                      opacity: 0,
+                                    }
+                              }
+                              transition={{
+                                duration: reduceMotion
+                                  ? 0
+                                  : 0.28,
+                                ease: "easeInOut",
+                              }}
+                              className="overflow-hidden"
+                            >
+                              <div
+                                className={`mt-3 min-w-0 overflow-x-clip rounded-2xl border p-2 sm:p-3 ${
+                                  highlighted
+                                    ? "border-white/10 bg-white/[0.04]"
+                                    : "border-black/10 bg-black/[0.015]"
+                                }`}
+                              >
+                                <div className="min-w-0 max-w-full overflow-hidden">
+                                  <ProcessVisual
+                                    stepId={step.id}
+                                  />
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </motion.article>
+          );
+        })}
       </div>
-    </section>
+    </div>
   );
 }

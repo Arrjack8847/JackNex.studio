@@ -5,7 +5,7 @@ const fields = [
   { label: "Project type", value: "Creative portfolio" },
   { label: "Main goal", value: "Showcase visual projects" },
   { label: "Style", value: "Modern and interactive" },
-  { label: "Expected timeline", value: "3–4 weeks" },
+  { label: "Expected timeline", value: "7-10 days" },
 ];
 
 export default function DiscoveryPreview() {

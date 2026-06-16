@@ -15,6 +15,7 @@ import { useActiveProcessStep } from "@/hooks/useActiveProcessStep";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 const ACTIVATION_POINT = 0.38;
+const SELECTION_SCROLL_NUDGE = 8;
 
 export default function HowIWork() {
   const activeStep = useActiveProcessStep(processStepIds);
@@ -58,7 +59,8 @@ export default function HowIWork() {
     const top =
       target.getBoundingClientRect().top +
       window.scrollY -
-      activationOffset;
+      activationOffset +
+      SELECTION_SCROLL_NUDGE;
 
     window.scrollTo({
       top: Math.max(top, 0),

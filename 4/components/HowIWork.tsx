@@ -11,6 +11,8 @@ import {
 } from "@/data/processSteps";
 import { useActiveProcessStep } from "@/hooks/useActiveProcessStep";
 
+const SELECTION_SCROLL_NUDGE = 8;
+
 export default function HowIWork() {
   const activeStep = useActiveProcessStep(processStepIds);
   const reduceMotion = useReducedMotion();
@@ -29,7 +31,11 @@ export default function HowIWork() {
     }
 
     const offset = window.innerHeight * 0.18;
-    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    const top =
+      target.getBoundingClientRect().top +
+      window.scrollY -
+      offset +
+      SELECTION_SCROLL_NUDGE;
 
     window.scrollTo({
       top,

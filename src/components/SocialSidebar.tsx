@@ -30,8 +30,16 @@ const SocialSidebar = () => {
 
         const revealPoint = window.innerHeight * 0.88;
         const workTop = workSection.getBoundingClientRect().top;
+        const viewportMiddle = window.innerHeight * 0.5;
+        const projectCards = Array.from(
+          workSection.querySelectorAll<HTMLElement>("[data-work-project]"),
+        );
+        const projectOwnsViewport = projectCards.some((card) => {
+          const rect = card.getBoundingClientRect();
+          return rect.top <= viewportMiddle && rect.bottom >= viewportMiddle;
+        });
 
-        setShowMobileBar(workTop <= revealPoint);
+        setShowMobileBar(workTop <= revealPoint && !projectOwnsViewport);
       });
     };
 

@@ -193,7 +193,7 @@ export default function Hero() {
             .to(
               "[data-mobile-headline]",
               {
-                autoAlpha: 0.09,
+                autoAlpha: 0.04,
                 y: -48,
                 scale: 0.95,
                 duration: 1.05,
@@ -204,9 +204,9 @@ export default function Hero() {
             .to(
               "[data-mobile-portrait]",
               {
-                left: "50%",
-                top: "57%",
-                scale: 1.1,
+                left: "72%",
+                top: "56%",
+                scale: 1.05,
                 rotate: 0,
                 duration: 1.3,
                 ease: "power2.inOut",
@@ -289,6 +289,7 @@ export default function Hero() {
             .to(
               "[data-mobile-portrait]",
               {
+                left: "50%",
                 top: "55%",
                 scale: 1.08,
                 duration: 0.8,
@@ -313,7 +314,7 @@ export default function Hero() {
             .to(
               "[data-mobile-headline]",
               {
-                autoAlpha: 0.045,
+                autoAlpha: 0.025,
                 y: -62,
                 duration: 0.7,
                 ease: "none",
@@ -533,28 +534,28 @@ export default function Hero() {
 
           <div
             data-mobile-craft-word
-            className="absolute left-[3%] top-[12%] text-[2.55rem] font-semibold leading-none tracking-[-0.065em] min-[390px]:text-[2.7rem]"
+            className="absolute left-[2%] top-[13%] text-[2.48rem] font-semibold leading-none tracking-[-0.065em] min-[390px]:text-[2.62rem]"
           >
             DESIGN
           </div>
 
           <div
             data-mobile-craft-word
-            className="absolute right-[4%] top-[31%] max-w-[78%] text-right font-serif text-[2.02rem] font-normal italic leading-none tracking-[-0.045em] min-[390px]:text-[2.16rem]"
+            className="absolute left-[3%] top-[34%] max-w-[53%] font-serif text-[1.72rem] font-normal italic leading-none tracking-[-0.04em] min-[390px]:text-[1.84rem]"
           >
             development
           </div>
 
           <div
             data-mobile-craft-word
-            className="absolute left-[52%] top-[57%] -translate-x-1/2 text-[2.35rem] font-semibold leading-none tracking-[-0.065em] min-[390px]:text-[2.5rem]"
+            className="absolute left-[4%] top-[56%] text-[2.18rem] font-semibold leading-none tracking-[-0.065em] min-[390px]:text-[2.32rem]"
           >
             MOTION
           </div>
 
           <p
             data-mobile-craft-copy
-            className="absolute inset-x-0 bottom-[3%] mx-auto max-w-[17rem] text-center text-[11.5px] leading-5 text-black/45"
+            className="absolute inset-x-0 top-[72%] mx-auto max-w-[16.5rem] text-center text-[11.5px] leading-5 text-black/45"
           >
             Visual direction, code and interaction shaped as one experience.
           </p>

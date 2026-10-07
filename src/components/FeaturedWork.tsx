@@ -207,7 +207,7 @@ const FeaturedWork = () => {
               ease: "power3.out",
               scrollTrigger: {
                 trigger: "[data-work-heading]",
-                start: "top 88%",
+                start: "top 98%",
                 toggleActions: "play none none none",
               },
             },
@@ -310,7 +310,7 @@ const FeaturedWork = () => {
     <section
       ref={sectionRef}
       id="work"
-      className="relative scroll-mt-24 py-24 sm:py-28"
+      className="relative scroll-mt-24 pb-24 pt-0 sm:pb-28 sm:pt-4 md:py-28"
       onPointerEnter={() => setIsInteracting(true)}
       onPointerLeave={() => setIsInteracting(false)}
       onFocusCapture={() => setIsInteracting(true)}

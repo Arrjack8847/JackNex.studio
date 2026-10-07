@@ -262,7 +262,7 @@ export default function Hero() {
             >
               <span>Mobile-first</span>
               <span>Performance-aware</span>
-              <span>Built for real brands</span>
+              <span>Working with clients worldwide</span>
             </motion.div>
           </div>
         </div>

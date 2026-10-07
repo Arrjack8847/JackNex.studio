@@ -11,6 +11,7 @@ export type Project = {
   category: string;
   tags: string[];
   description: string;
+  mobileDescription?: string;
   role: string;
   focus: string;
   year: string;
@@ -141,6 +142,8 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "GSAP"],
     description:
       "A premium editorial website for an invitation studio, combining product discovery, celebration storytelling, craftsmanship content, and enquiry-focused UX into one polished experience.",
+    mobileDescription:
+      "Premium invitation studio website built around product discovery, storytelling, and enquiry.",
     role: "Design + Development",
     focus: "Editorial UX / Brand Presence",
     year: "2026",
@@ -196,6 +199,8 @@ export const projects: Project[] = [
     tags: ["Mobile-first", "Motion", "Bilingual UX"],
     description:
       "A traditional Myanmar wedding invitation reimagined as an interactive digital experience, combining ornate cultural visuals, bilingual presentation, music, and cinematic transitions.",
+    mobileDescription:
+      "Traditional Myanmar invitation transformed into a cinematic, bilingual digital experience.",
     role: "Design + Development",
     focus: "Invitation UX / Cultural Storytelling",
     year: "2026",
@@ -251,6 +256,8 @@ export const projects: Project[] = [
     tags: ["Responsive", "Motion", "Visual Storytelling"],
     description:
       "A bold creative portfolio for video and visual work, built around high-impact typography, cinematic project presentation, and a dark editorial direction across desktop and mobile.",
+    mobileDescription:
+      "A bold creative portfolio combining video work, cinematic visuals, and editorial interaction.",
     role: "Design + Development",
     focus: "Creative Direction / Portfolio UX",
     year: "2026",

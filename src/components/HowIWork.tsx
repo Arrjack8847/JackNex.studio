@@ -131,13 +131,13 @@ export default function HowIWork() {
           </div>
 
           <h2 className="text-3xl font-bold leading-tight tracking-[-0.035em] text-black sm:text-4xl md:text-5xl">
-            From First Idea to
-            <br className="hidden sm:block" /> Final Launch
+            From an idea to
+            <br className="hidden sm:block" /> an experience
           </h2>
 
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-black/60 sm:text-base">
-            A clear, collaborative process that keeps your project organized,
-            creative and focused from the first discussion to delivery.
+            A focused two-week process that takes your project from the first
+            idea through creative direction, design, development, refinement and launch.
           </p>
         </motion.header>
 
@@ -165,7 +165,7 @@ export default function HowIWork() {
                     : "mt-3 text-3xl xl:text-4xl"
                 }`}
               >
-                One connected journey, five focused stages.
+                Around two weeks. Five focused stages.
               </h3>
 
               <p
@@ -175,8 +175,8 @@ export default function HowIWork() {
                     : "mt-3 text-sm leading-6"
                 }`}
               >
-                Scroll through the process or choose a stage to see what
-                happens and what you receive.
+                Follow the journey from discovery to launch and see what
+                happens at each stage and what you receive.
               </p>
 
               <div
@@ -275,16 +275,16 @@ export default function HowIWork() {
         >
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-black/40">
-              Every project is different
+              Typical project timeline
             </p>
 
             <h3 className="mt-2 text-2xl font-bold tracking-[-0.03em] text-black sm:text-3xl">
-              Have an idea you want to build?
+              From idea to launch in around two weeks.
             </h3>
 
             <p className="mt-2 max-w-2xl text-sm leading-7 text-black/55 sm:text-base">
-              Tell me your goals, preferred style, required features and
-              expected timeline. I will help you choose the right approach.
+              Tell me your goals, preferred style and required features. I will
+              shape the right direction and keep the project moving toward launch.
             </p>
           </div>
 

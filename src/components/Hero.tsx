@@ -114,10 +114,16 @@ export default function Hero() {
               {
                 autoAlpha: 1,
                 scale: 1,
-                rotate: 1.5,
+                rotate: 1.25,
                 duration: 0.6,
               },
               "-=0.3",
+            )
+            .fromTo(
+              "[data-mobile-portrait-label]",
+              { autoAlpha: 0, y: 8 },
+              { autoAlpha: 1, y: 0, duration: 0.35 },
+              "-=0.28",
             )
             .fromTo(
               "[data-mobile-support]",
@@ -164,6 +170,16 @@ export default function Hero() {
               0.9,
             )
             .to(
+              "[data-mobile-portrait-label]",
+              {
+                autoAlpha: 0,
+                y: -8,
+                duration: 0.45,
+                ease: "none",
+              },
+              0.92,
+            )
+            .to(
               "[data-mobile-actions]",
               {
                 autoAlpha: 0,
@@ -190,7 +206,7 @@ export default function Hero() {
               {
                 left: "50%",
                 top: "60%",
-                scale: 1.2,
+                scale: 1.34,
                 rotate: 0,
                 duration: 1.3,
                 ease: "power2.inOut",
@@ -355,9 +371,9 @@ export default function Hero() {
         </div>
 
         {/* The headline stays in the composition and becomes the ghost layer. */}
-        <div className="absolute inset-x-5 top-[28%] z-10">
-          <div data-mobile-status className="mb-5 w-fit">
-            <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-black/55 backdrop-blur-md">
+        <div className="absolute inset-x-5 top-[24.5%] z-10">
+          <div data-mobile-status className="mb-4 w-fit">
+            <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-3 py-1.5 text-[8.5px] font-semibold uppercase tracking-[0.15em] text-black/55 backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               Available for projects
             </span>
@@ -365,14 +381,14 @@ export default function Hero() {
 
           <p
             data-mobile-kicker
-            className="mb-3 text-[9px] font-semibold uppercase tracking-[0.31em] text-black/35"
+            className="mb-2.5 text-[8.5px] font-semibold uppercase tracking-[0.3em] text-black/35"
           >
             JackNex Studio
           </p>
 
           <h1
             data-mobile-headline
-            className="max-w-[8.4ch] text-[2.76rem] font-semibold leading-[0.9] tracking-[-0.064em] min-[390px]:text-[3rem]"
+            className="max-w-[8.6ch] text-[2.68rem] font-semibold leading-[0.9] tracking-[-0.064em] min-[390px]:text-[2.9rem]"
           >
             <span className="block overflow-hidden">
               <span data-mobile-headline-line className="block">
@@ -387,7 +403,7 @@ export default function Hero() {
             <span className="block overflow-hidden">
               <span
                 data-mobile-headline-line
-                className="block font-serif font-normal italic tracking-[-0.035em]"
+                className="block whitespace-nowrap font-serif text-[0.9em] font-normal italic tracking-[-0.04em]"
               >
                 unforgettable.
               </span>
@@ -398,31 +414,39 @@ export default function Hero() {
         {/* One shared portrait moves through all three scenes. */}
         <div
           data-mobile-portrait
-          className="absolute left-[76%] top-[64%] z-30 w-[34%] max-w-[142px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[24px] border border-black/10 bg-white shadow-[0_18px_40px_rgba(0,0,0,0.11)]"
+          className="absolute left-[79%] top-[70%] z-30 w-[29%] max-w-[122px] -translate-x-1/2 -translate-y-1/2"
         >
-          <div className="aspect-[3/4] overflow-hidden">
-            <img
-              src="/hero-man.webp"
-              alt="Jack, designer and developer behind JackNex Studio"
-              width={1280}
-              height={739}
-              loading="eager"
-              decoding="async"
-              className="h-full w-full object-cover grayscale"
-            />
+          <div className="overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_16px_34px_rgba(0,0,0,0.10)]">
+            <div className="aspect-[3/4] overflow-hidden">
+              <img
+                src="/hero-man.webp"
+                alt="Jack, designer and developer behind JackNex Studio"
+                width={1280}
+                height={739}
+                loading="eager"
+                decoding="async"
+                className="h-full w-full object-cover grayscale"
+              />
+            </div>
+          </div>
+          <div
+            data-mobile-portrait-label
+            className="mt-2 flex items-center justify-between gap-2 px-1 text-[7.5px] font-semibold uppercase tracking-[0.15em] text-black/38"
+          >
+            <span>01</span>
+            <span>Jack</span>
           </div>
         </div>
 
         {/* Scene 1 support copy. */}
         <div
           data-mobile-support
-          className="absolute bottom-[15.5%] left-5 z-20 max-w-[48%]"
+          className="absolute bottom-[18%] left-5 z-20 max-w-[46%]"
         >
-          <p className="text-[12px] leading-5 text-black/55">
-            Cinematic, interactive, mobile-first websites for brands and
-            meaningful celebrations.
+          <p className="text-[11.5px] leading-[1.6] text-black/52">
+            Cinematic, interactive websites built mobile-first.
           </p>
-          <p className="mt-3 text-[8.5px] font-semibold uppercase leading-4 tracking-[0.14em] text-black/32">
+          <p className="mt-3 text-[8px] font-semibold uppercase leading-4 tracking-[0.14em] text-black/30">
             Mobile-first · Worldwide
           </p>
         </div>

@@ -72,7 +72,7 @@ function ShowcaseMockup({
         className="relative z-10 aspect-[3/2] w-full max-w-[690px] origin-center"
       >
         <div
-          className="absolute left-[15.4%] top-[12.2%] z-0 h-[58.8%] w-[59.7%] overflow-hidden bg-white"
+          className="absolute left-[15.4%] top-[12.2%] z-20 h-[58.8%] w-[59.7%] overflow-hidden bg-white"
           style={{
             clipPath: "polygon(0.8% 6%, 99.3% 0%, 93.4% 96.6%, 5.3% 100%)",
             transform: "rotate(-0.7deg) skewY(-0.2deg)",
@@ -95,7 +95,7 @@ function ShowcaseMockup({
         </div>
 
         <div
-          className="absolute left-[68.1%] top-[25.3%] z-[1] h-[64.9%] w-[22.6%] overflow-hidden rounded-[13%] bg-white"
+          className="absolute left-[68.1%] top-[25.3%] z-20 h-[64.9%] w-[22.6%] overflow-hidden rounded-[13%] bg-white"
           style={{
             clipPath: "polygon(11% 0%, 94% 7%, 82% 100%, 0% 91%)",
             transform: "rotate(0.5deg)",
@@ -125,7 +125,13 @@ function ShowcaseMockup({
           className="pointer-events-none absolute inset-0 z-10 h-full w-full select-none object-contain"
         />
 
-        <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-br from-white/8 via-transparent to-transparent" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-[77.5%] top-[27.2%] z-30 h-[1.8%] w-[7.2%] rounded-full bg-black"
+          style={{ transform: "rotate(4.5deg)" }}
+        />
+
+        <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-br from-white/8 via-transparent to-transparent" />
       </motion.div>
     </div>
   );

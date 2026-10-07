@@ -205,8 +205,8 @@ export default function Hero() {
               "[data-mobile-portrait]",
               {
                 left: "50%",
-                top: "58%",
-                scale: 1.16,
+                top: "57%",
+                scale: 1.1,
                 rotate: 0,
                 duration: 1.3,
                 ease: "power2.inOut",
@@ -533,21 +533,21 @@ export default function Hero() {
 
           <div
             data-mobile-craft-word
-            className="absolute left-[2%] top-[12%] text-[2.85rem] font-semibold leading-none tracking-[-0.065em]"
+            className="absolute left-[3%] top-[12%] text-[2.55rem] font-semibold leading-none tracking-[-0.065em] min-[390px]:text-[2.7rem]"
           >
             DESIGN
           </div>
 
           <div
             data-mobile-craft-word
-            className="absolute right-[1%] top-[31%] font-serif text-[2.55rem] font-normal italic leading-none tracking-[-0.045em]"
+            className="absolute right-[4%] top-[31%] max-w-[78%] text-right font-serif text-[2.02rem] font-normal italic leading-none tracking-[-0.045em] min-[390px]:text-[2.16rem]"
           >
             development
           </div>
 
           <div
             data-mobile-craft-word
-            className="absolute right-[7%] top-[54%] text-[2.7rem] font-semibold leading-none tracking-[-0.065em]"
+            className="absolute left-[52%] top-[57%] -translate-x-1/2 text-[2.35rem] font-semibold leading-none tracking-[-0.065em] min-[390px]:text-[2.5rem]"
           >
             MOTION
           </div>

@@ -4,7 +4,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { siteConfig } from "@/config/site";
 import { useAnimationSettings } from "@/hooks/use-animation-settings";
@@ -65,46 +65,67 @@ export default function Hero() {
     >
       <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] grid-cols-1 lg:grid-cols-2">
         <div className="flex items-center px-5 pb-12 pt-28 sm:px-8 md:px-12 lg:px-16 xl:px-20">
-          <div className="max-w-[680px]">
-            <motion.p
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
+          <div className="max-w-[720px]">
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.45 }}
+              className="mb-7 flex flex-wrap items-center gap-3"
+            >
+              <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/65 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-black/60 backdrop-blur-md sm:text-[11px]">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Available for select projects
+              </span>
+              <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-black/35 sm:text-[11px]">
+                Design · Development · Motion
+              </span>
+            </motion.div>
+
+            <motion.p
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: 0.05 }}
               className="mb-5 text-[10px] font-medium uppercase tracking-[0.42em] text-black/40 sm:text-xs"
             >
               JackNex Studio
             </motion.p>
 
             <motion.h1
-  initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: prefersReducedMotion ? 0 : 0.7 }}
-  className="max-w-[9ch] text-[3rem] font-semibold leading-[0.88] tracking-[-0.055em] sm:text-[4.2rem] md:text-[5.4rem] lg:text-[6.3rem] xl:text-[7rem]"
->
-  I build websites that make brands look{" "}
-  <span className="font-serif font-normal italic tracking-[-0.025em]">
-    premium.
-  </span>
-</motion.h1>
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.7 }}
+              className="max-w-[10ch] text-[3.15rem] font-semibold leading-[0.88] tracking-[-0.06em] sm:text-[4.4rem] md:text-[5.6rem] lg:text-[6.35rem] xl:text-[7.1rem]"
+            >
+              Websites built to feel{" "}
+              <span className="font-serif font-normal italic tracking-[-0.025em]">
+                unforgettable.
+              </span>
+            </motion.h1>
 
             <motion.p
               initial={prefersReducedMotion ? false : { opacity: 0, y: 26 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.7 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.7, delay: 0.08 }}
               className="mt-7 max-w-[620px] text-sm leading-7 tracking-[-0.01em] text-black/55 sm:text-base md:text-lg md:leading-8"
             >
-              Clean, modern, conversion-focused websites for personal brands,
-              businesses, and creative projects that want to stand out online.
+              I design and build cinematic, interactive, mobile-first websites
+              for brands, businesses, and meaningful celebrations — combining
+              premium visual direction with smooth, purposeful motion.
             </motion.p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.55, delay: 0.18 }}
+              className="mt-8 flex flex-wrap gap-4"
+            >
               <a
                 href="#work"
-                className="group inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm text-white transition hover:scale-[1.03]"
+                className="group inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition hover:scale-[1.03]"
               >
-                View Work
-                <ArrowUpRight
-                  className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                Explore Selected Work
+                <ArrowDown
+                  className="h-4 w-4 transition group-hover:translate-y-0.5"
                   aria-hidden="true"
                 />
               </a>
@@ -113,11 +134,26 @@ export default function Hero() {
                 href={siteConfig.contact.whatsapp.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full border border-black/15 bg-white/60 px-6 py-3 text-sm backdrop-blur-sm transition hover:scale-[1.03]"
+                className="group inline-flex items-center gap-2 rounded-full border border-black/15 bg-white/60 px-6 py-3 text-sm font-medium backdrop-blur-sm transition hover:scale-[1.03]"
               >
-                {siteConfig.contact.whatsapp.label}
+                Start a Project
+                <ArrowUpRight
+                  className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
               </a>
-            </div>
+            </motion.div>
+
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.3 }}
+              className="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.16em] text-black/35"
+            >
+              <span>Mobile-first</span>
+              <span>Performance-aware</span>
+              <span>Built for real brands</span>
+            </motion.div>
           </div>
         </div>
 
@@ -146,11 +182,13 @@ export default function Hero() {
             }}
           />
 
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/5 lg:bg-gradient-to-r lg:from-[#f6f6f4]/20 lg:via-transparent lg:to-transparent" />
+
           <div className="pointer-events-none absolute inset-0 z-[2]">
             {heroParticles.map((particle) => (
               <motion.span
                 key={particle.id}
-                className="absolute block rounded-full bg-black/20"
+                className="absolute block rounded-full bg-white/35 mix-blend-overlay"
                 style={{
                   width: particle.size,
                   height: particle.size,
@@ -163,7 +201,7 @@ export default function Hero() {
                     ? {
                         y: [0, -particleTravel, 0],
                         x: [0, 6, -4, 0],
-                        opacity: [0.2, 0.4, 0.2],
+                        opacity: [0.18, 0.48, 0.18],
                       }
                     : { x: 0, y: 0, opacity: 0.2 }
                 }
@@ -175,6 +213,10 @@ export default function Hero() {
                 }}
               />
             ))}
+          </div>
+
+          <div className="absolute bottom-5 left-5 z-10 rounded-full border border-white/20 bg-black/25 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-white/80 backdrop-blur-md sm:bottom-7 sm:left-7">
+            Jack · Designer & Developer
           </div>
         </div>
       </div>

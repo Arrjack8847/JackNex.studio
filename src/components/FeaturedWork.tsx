@@ -81,7 +81,10 @@ function ShowcaseMockup({
                 prefersReducedMotion ? false : { opacity: 0.25, scale: 1.03 }
               }
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: "easeOut" }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.7,
+                ease: "easeOut",
+              }}
               className="h-full w-full"
             >
               <ProjectPreviewImage
@@ -115,7 +118,10 @@ function ShowcaseMockup({
                 prefersReducedMotion ? false : { opacity: 0.25, scale: 1.03 }
               }
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.7, ease: "easeOut" }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.7,
+                ease: "easeOut",
+              }}
               className="h-full w-full"
             >
               <ProjectPreviewImage
@@ -191,7 +197,7 @@ const FeaturedWork = () => {
   return (
     <section
       id="work"
-      className="relative scroll-mt-24 py-28"
+      className="relative scroll-mt-24 py-24 sm:py-28"
       onPointerEnter={() => setIsInteracting(true)}
       onPointerLeave={() => setIsInteracting(false)}
       onFocusCapture={() => setIsInteracting(true)}
@@ -204,23 +210,31 @@ const FeaturedWork = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
-          className="mb-16"
+          className="mb-14 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between"
         >
-          <div className="mb-4 flex items-center gap-3">
-            <div className="h-[2px] w-8 bg-primary" />
-            <span className="text-sm font-medium uppercase tracking-wider text-primary">
-              Portfolio
-            </span>
+          <div>
+            <div className="mb-4 flex items-center gap-3">
+              <div className="h-[2px] w-8 bg-primary" />
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-black/55 sm:text-sm">
+                Selected Work
+              </span>
+            </div>
+            <h2
+              id="featured-work-title"
+              className="max-w-[12ch] text-3xl font-bold leading-[1.02] tracking-[-0.045em] text-foreground sm:text-4xl md:text-5xl"
+            >
+              Projects with a point of view.
+            </h2>
           </div>
-          <h2
-            id="featured-work-title"
-            className="text-3xl font-bold text-foreground sm:text-4xl"
-          >
-            Featured Work
-          </h2>
+
+          <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
+            A selection of client work, interactive invitations, and
+            conversion-focused builds — each designed around a different
+            audience, mood, and purpose.
+          </p>
         </motion.div>
 
-        <div className="space-y-10">
+        <div className="space-y-8 sm:space-y-10">
           {projects.map((project, projectIndex) => {
             const currentIndex = activeIndexes[projectIndex];
             const isReverse = projectIndex % 2 !== 0;
@@ -233,7 +247,7 @@ const FeaturedWork = () => {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{
                   duration: prefersReducedMotion ? 0 : 0.6,
-                  delay: prefersReducedMotion ? 0 : projectIndex * 0.1,
+                  delay: prefersReducedMotion ? 0 : projectIndex * 0.08,
                 }}
                 className="glass-surface overflow-hidden rounded-[30px] border border-border/60"
               >
@@ -249,17 +263,49 @@ const FeaturedWork = () => {
                   />
 
                   <div className="flex flex-col justify-center">
-                    <span className="mb-3 text-xs font-medium uppercase tracking-[0.22em] text-primary">
-                      {project.category}
-                    </span>
+                    <div className="mb-3 flex items-center gap-3">
+                      <span className="text-[10px] font-semibold tracking-[0.18em] text-black/30">
+                        {String(projectIndex + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-xs font-medium uppercase tracking-[0.22em] text-primary">
+                        {project.category}
+                      </span>
+                    </div>
 
-                    <h3 className="mb-4 text-2xl font-bold text-foreground sm:text-3xl">
+                    <h3 className="mb-4 text-2xl font-bold tracking-[-0.025em] text-foreground sm:text-3xl">
                       {project.title}
                     </h3>
 
-                    <p className="mb-6 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
                       {project.description}
                     </p>
+
+                    <dl className="my-6 grid grid-cols-2 gap-x-5 gap-y-4 border-y border-black/10 py-5 sm:grid-cols-3">
+                      <div>
+                        <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
+                          Role
+                        </dt>
+                        <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
+                          {project.role}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
+                          Focus
+                        </dt>
+                        <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
+                          {project.focus}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
+                          Year
+                        </dt>
+                        <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
+                          {project.year}
+                        </dd>
+                      </div>
+                    </dl>
 
                     <div className="mb-6 flex flex-wrap gap-2">
                       {project.tags.map((tag) => (
@@ -277,10 +323,13 @@ const FeaturedWork = () => {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-primary"
+                        className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-black/60"
                       >
-                        View Live Site
-                        <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                        Visit Project
+                        <ExternalLink
+                          className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
                       </a>
 
                       <div

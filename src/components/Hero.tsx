@@ -67,24 +67,15 @@ export default function Hero() {
       media.add(
         "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
         () => {
-          gsap.set("[data-mobile-scene='intro']", {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
+          gsap.set("[data-mobile-craft]", {
+            autoAlpha: 0,
+            y: 28,
           });
 
-          gsap.set(
-            [
-              "[data-mobile-scene='craft']",
-              "[data-mobile-scene='identity']",
-              "[data-mobile-scene='work']",
-            ],
-            {
-              autoAlpha: 0,
-              y: 24,
-              pointerEvents: "none",
-            },
-          );
+          gsap.set("[data-mobile-identity]", {
+            autoAlpha: 0,
+            y: 28,
+          });
 
           const intro = gsap.timeline({
             defaults: { ease: "power3.out" },
@@ -92,38 +83,53 @@ export default function Hero() {
 
           intro
             .fromTo(
-              "[data-mobile-intro-status]",
+              "[data-mobile-status]",
               { autoAlpha: 0, y: 12 },
               { autoAlpha: 1, y: 0, duration: 0.35 },
             )
             .fromTo(
-              "[data-mobile-intro-kicker]",
+              "[data-mobile-kicker]",
               { autoAlpha: 0, y: 12 },
               { autoAlpha: 1, y: 0, duration: 0.35 },
               "-=0.18",
             )
             .fromTo(
-              "[data-mobile-intro-line]",
+              "[data-mobile-headline-line]",
               { autoAlpha: 0, yPercent: 55 },
               {
                 autoAlpha: 1,
                 yPercent: 0,
-                duration: 0.55,
+                duration: 0.58,
                 stagger: 0.07,
               },
               "-=0.12",
             )
             .fromTo(
-              "[data-mobile-intro-detail]",
-              { autoAlpha: 0, y: 18 },
-              { autoAlpha: 1, y: 0, duration: 0.45 },
-              "-=0.24",
+              "[data-mobile-portrait]",
+              {
+                autoAlpha: 0,
+                scale: 0.92,
+                rotate: 4,
+              },
+              {
+                autoAlpha: 1,
+                scale: 1,
+                rotate: 1.5,
+                duration: 0.6,
+              },
+              "-=0.3",
             )
             .fromTo(
-              "[data-mobile-intro-actions]",
+              "[data-mobile-support]",
+              { autoAlpha: 0, y: 16 },
+              { autoAlpha: 1, y: 0, duration: 0.42 },
+              "-=0.3",
+            )
+            .fromTo(
+              "[data-mobile-actions]",
               { autoAlpha: 0, y: 14 },
               { autoAlpha: 1, y: 0, duration: 0.4 },
-              "-=0.22",
+              "-=0.2",
             );
 
           const story = gsap.timeline({
@@ -138,85 +144,145 @@ export default function Hero() {
 
           story
             .to(
-              "[data-mobile-scene='intro']",
+              ["[data-mobile-status]", "[data-mobile-kicker]"],
               {
                 autoAlpha: 0,
-                y: -22,
-                scale: 0.985,
+                y: -18,
                 duration: 0.7,
-                ease: "power2.inOut",
+                ease: "none",
+              },
+              0.8,
+            )
+            .to(
+              "[data-mobile-support]",
+              {
+                autoAlpha: 0,
+                y: 18,
+                duration: 0.65,
+                ease: "none",
+              },
+              0.9,
+            )
+            .to(
+              "[data-mobile-actions]",
+              {
+                autoAlpha: 0,
+                y: 18,
+                duration: 0.65,
+                ease: "none",
                 pointerEvents: "none",
               },
-              0.85,
+              0.95,
+            )
+            .to(
+              "[data-mobile-headline]",
+              {
+                autoAlpha: 0.09,
+                y: -48,
+                scale: 0.95,
+                duration: 1.05,
+                ease: "power2.inOut",
+              },
+              1,
+            )
+            .to(
+              "[data-mobile-portrait]",
+              {
+                left: "50%",
+                top: "60%",
+                scale: 1.2,
+                rotate: 0,
+                duration: 1.3,
+                ease: "power2.inOut",
+              },
+              1.05,
             )
             .fromTo(
-              "[data-mobile-scene='craft']",
+              "[data-mobile-craft]",
               {
                 autoAlpha: 0,
                 y: 28,
-                scale: 0.98,
               },
               {
                 autoAlpha: 1,
                 y: 0,
-                scale: 1,
-                duration: 0.7,
-                ease: "power3.out",
-              },
-              1.65,
-            )
-            .to(
-              "[data-mobile-scene='craft']",
-              {
-                autoAlpha: 0,
-                y: -22,
-                scale: 0.985,
-                duration: 0.65,
-                ease: "power2.inOut",
-              },
-              3.65,
-            )
-            .fromTo(
-              "[data-mobile-scene='identity']",
-              {
-                autoAlpha: 0,
-                y: 28,
-                scale: 0.98,
-              },
-              {
-                autoAlpha: 1,
-                y: 0,
-                scale: 1,
-                duration: 0.7,
-                ease: "power3.out",
-              },
-              4.4,
-            )
-            .to(
-              "[data-mobile-scene='identity']",
-              {
-                autoAlpha: 0,
-                y: -20,
-                scale: 0.985,
-                duration: 0.65,
-                ease: "power2.inOut",
-              },
-              6.35,
-            )
-            .fromTo(
-              "[data-mobile-scene='work']",
-              {
-                autoAlpha: 0,
-                y: 34,
-                scale: 0.98,
-              },
-              {
-                autoAlpha: 1,
-                y: 0,
-                scale: 1,
                 duration: 0.8,
                 ease: "power3.out",
-                pointerEvents: "auto",
+              },
+              2.15,
+            )
+            .to(
+              "[data-mobile-craft]",
+              {
+                autoAlpha: 0,
+                y: -24,
+                duration: 0.7,
+                ease: "power2.inOut",
+              },
+              4.25,
+            )
+            .to(
+              "[data-mobile-portrait]",
+              {
+                top: "55%",
+                scale: 1.08,
+                duration: 0.8,
+                ease: "power2.inOut",
+              },
+              4.2,
+            )
+            .fromTo(
+              "[data-mobile-identity]",
+              {
+                autoAlpha: 0,
+                y: 28,
+              },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power3.out",
+              },
+              4.85,
+            )
+            .to(
+              "[data-mobile-headline]",
+              {
+                autoAlpha: 0.045,
+                y: -62,
+                duration: 0.7,
+                ease: "none",
+              },
+              4.9,
+            )
+            .to(
+              "[data-mobile-identity]",
+              {
+                autoAlpha: 0,
+                y: -26,
+                duration: 0.8,
+                ease: "power2.inOut",
+              },
+              7.05,
+            )
+            .to(
+              "[data-mobile-portrait]",
+              {
+                top: "35%",
+                scale: 0.82,
+                autoAlpha: 0,
+                duration: 1,
+                ease: "power2.inOut",
+              },
+              7.05,
+            )
+            .to(
+              "[data-mobile-headline]",
+              {
+                autoAlpha: 0,
+                y: -82,
+                duration: 0.8,
+                ease: "none",
               },
               7.1,
             );
@@ -244,7 +310,7 @@ export default function Hero() {
 
   const mobileStoryHeight = prefersReducedMotion
     ? "min-h-[100svh]"
-    : "min-h-[300svh]";
+    : "min-h-[270svh]";
 
   return (
     <section
@@ -256,8 +322,8 @@ export default function Hero() {
       <div className="sticky top-0 h-[100svh] overflow-hidden md:hidden">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.038)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.038)_1px,transparent_1px)] bg-[size:44px_44px]" />
-          <div className="absolute -left-20 top-[22%] h-52 w-52 rounded-full bg-black/[0.022] blur-3xl" />
-          <div className="absolute -right-24 top-[48%] h-60 w-60 rounded-full bg-black/[0.025] blur-3xl" />
+          <div className="absolute -left-20 top-[20%] h-52 w-52 rounded-full bg-black/[0.022] blur-3xl" />
+          <div className="absolute -right-24 top-[50%] h-60 w-60 rounded-full bg-black/[0.025] blur-3xl" />
 
           {heroParticles.map((particle) => (
             <motion.span
@@ -288,12 +354,9 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* Scene 1: clean hero */}
-        <div
-          data-mobile-scene="intro"
-          className="absolute inset-0 z-10 flex flex-col px-5 pb-5 pt-28"
-        >
-          <div data-mobile-intro-status className="w-fit">
+        {/* The headline stays in the composition and becomes the ghost layer. */}
+        <div className="absolute inset-x-5 top-[28%] z-10">
+          <div data-mobile-status className="mb-5 w-fit">
             <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-black/55 backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               Available for projects
@@ -301,193 +364,135 @@ export default function Hero() {
           </div>
 
           <p
-            data-mobile-intro-kicker
-            className="mt-5 text-[9px] font-semibold uppercase tracking-[0.31em] text-black/35"
+            data-mobile-kicker
+            className="mb-3 text-[9px] font-semibold uppercase tracking-[0.31em] text-black/35"
           >
             JackNex Studio
           </p>
 
-          <h1 className="mt-3 max-w-[8.2ch] text-[2.72rem] font-semibold leading-[0.9] tracking-[-0.064em] min-[390px]:text-[2.95rem]">
+          <h1
+            data-mobile-headline
+            className="max-w-[8.4ch] text-[2.76rem] font-semibold leading-[0.9] tracking-[-0.064em] min-[390px]:text-[3rem]"
+          >
             <span className="block overflow-hidden">
-              <span data-mobile-intro-line className="block">
+              <span data-mobile-headline-line className="block">
                 Websites built
               </span>
             </span>
             <span className="block overflow-hidden">
-              <span data-mobile-intro-line className="block">
+              <span data-mobile-headline-line className="block">
                 to feel
               </span>
             </span>
             <span className="block overflow-hidden">
               <span
-                data-mobile-intro-line
+                data-mobile-headline-line
                 className="block font-serif font-normal italic tracking-[-0.035em]"
               >
                 unforgettable.
               </span>
             </span>
           </h1>
+        </div>
 
-          <div
-            data-mobile-intro-detail
-            className="mt-5 grid grid-cols-[1fr_0.72fr] items-end gap-4"
-          >
-            <div>
-              <p className="text-[12.5px] leading-5 text-black/55">
-                Cinematic, interactive, mobile-first websites for brands and
-                meaningful celebrations.
-              </p>
-              <p className="mt-3 text-[8.5px] font-semibold uppercase leading-4 tracking-[0.14em] text-black/32">
-                Mobile-first · Worldwide
-              </p>
-            </div>
-
-            <div className="relative ml-auto w-full max-w-[132px] rotate-[1.5deg] overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_16px_34px_rgba(0,0,0,0.10)]">
-              <div className="aspect-[3/4] overflow-hidden">
-                <img
-                  src="/hero-man.webp"
-                  alt="Jack, designer and developer behind JackNex Studio"
-                  width={1280}
-                  height={739}
-                  loading="eager"
-                  decoding="async"
-                  className="h-full w-full object-cover grayscale"
-                />
-              </div>
-              <div className="border-t border-black/10 bg-white/95 px-3 py-2.5">
-                <p className="text-[8px] font-semibold uppercase tracking-[0.16em] text-black/40">
-                  Jack
-                </p>
-                <p className="mt-0.5 text-[10px] font-medium text-black/70">
-                  Designer & Developer
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div
-            data-mobile-intro-actions
-            className="mt-auto grid grid-cols-2 gap-2.5 pt-5"
-          >
-            <a
-              href="#work"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-black px-4 text-[12px] font-semibold text-white"
-            >
-              View Work
-              <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
-            <a
-              href={siteConfig.contact.whatsapp.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-black/15 bg-white/80 px-4 text-[12px] font-semibold text-black backdrop-blur-md"
-            >
-              Start Project
-              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
+        {/* One shared portrait moves through all three scenes. */}
+        <div
+          data-mobile-portrait
+          className="absolute left-[76%] top-[64%] z-30 w-[34%] max-w-[142px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[24px] border border-black/10 bg-white shadow-[0_18px_40px_rgba(0,0,0,0.11)]"
+        >
+          <div className="aspect-[3/4] overflow-hidden">
+            <img
+              src="/hero-man.webp"
+              alt="Jack, designer and developer behind JackNex Studio"
+              width={1280}
+              height={739}
+              loading="eager"
+              decoding="async"
+              className="h-full w-full object-cover grayscale"
+            />
           </div>
         </div>
 
-        {/* Scene 2: craft */}
+        {/* Scene 1 support copy. */}
         <div
-          data-mobile-scene="craft"
-          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center px-6 pb-8 pt-32 text-center opacity-0"
+          data-mobile-support
+          className="absolute bottom-[15.5%] left-5 z-20 max-w-[48%]"
+        >
+          <p className="text-[12px] leading-5 text-black/55">
+            Cinematic, interactive, mobile-first websites for brands and
+            meaningful celebrations.
+          </p>
+          <p className="mt-3 text-[8.5px] font-semibold uppercase leading-4 tracking-[0.14em] text-black/32">
+            Mobile-first · Worldwide
+          </p>
+        </div>
+
+        <div
+          data-mobile-actions
+          className="absolute inset-x-5 bottom-5 z-40 grid grid-cols-2 gap-2.5"
+        >
+          <a
+            href="#work"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-black px-4 text-[12px] font-semibold text-white"
+          >
+            View Work
+            <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+          <a
+            href={siteConfig.contact.whatsapp.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-black/15 bg-white/80 px-4 text-[12px] font-semibold text-black backdrop-blur-md"
+          >
+            Start Project
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+        </div>
+
+        {/* Scene 2 grows around the same portrait. */}
+        <div
+          data-mobile-craft
+          className="pointer-events-none absolute inset-x-5 top-[19%] z-20 text-center opacity-0"
         >
           <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-black/35">
             One connected workflow
           </p>
 
-          <div className="mt-7 space-y-0.5 text-[2.75rem] font-semibold leading-[0.88] tracking-[-0.06em]">
+          <div className="mt-5 space-y-0.5 text-[2.7rem] font-semibold leading-[0.88] tracking-[-0.06em]">
             <div>DESIGN</div>
             <div className="font-serif font-normal italic">development</div>
             <div>MOTION</div>
           </div>
 
-          <div className="mt-8 w-[44%] max-w-[168px] overflow-hidden rounded-[26px] border border-black/10 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]">
-            <div className="aspect-[3/4] overflow-hidden">
-              <img
-                src="/hero-man.webp"
-                alt=""
-                aria-hidden="true"
-                width={1280}
-                height={739}
-                loading="eager"
-                decoding="async"
-                className="h-full w-full object-cover grayscale"
-              />
-            </div>
-          </div>
-
-          <p className="mx-auto mt-6 max-w-[17rem] text-[12px] leading-5 text-black/45">
+          <p className="mx-auto mt-[15.5rem] max-w-[17rem] text-[12px] leading-5 text-black/45">
             Visual direction, code and interaction shaped as one experience.
           </p>
         </div>
 
-        {/* Scene 3: identity */}
+        {/* Scene 3 turns the same portrait into the personal reveal. */}
         <div
-          data-mobile-scene="identity"
-          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center px-6 pb-8 pt-32 text-center opacity-0"
+          data-mobile-identity
+          className="pointer-events-none absolute inset-x-5 top-[17%] z-20 text-center opacity-0"
         >
           <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-black/35">
             Behind the studio
           </p>
 
-          <h2 className="mt-5 text-[4.25rem] font-semibold leading-none tracking-[-0.07em]">
+          <h2 className="mt-4 text-[4rem] font-semibold leading-none tracking-[-0.07em]">
             Jack
           </h2>
 
-          <div className="mt-6 w-[42%] max-w-[160px] overflow-hidden rounded-[26px] border border-black/10 bg-white shadow-[0_18px_42px_rgba(0,0,0,0.10)]">
-            <div className="aspect-[3/4] overflow-hidden">
-              <img
-                src="/hero-man.webp"
-                alt=""
-                aria-hidden="true"
-                width={1280}
-                height={739}
-                loading="eager"
-                decoding="async"
-                className="h-full w-full object-cover grayscale"
-              />
-            </div>
+          <div className="mx-auto mt-[16.5rem] max-w-[18rem]">
+            <p className="font-serif text-[1.25rem] italic text-black/65">
+              Designer & Developer
+            </p>
+            <div className="mx-auto mt-4 h-px w-10 bg-black/15" />
+            <p className="mt-4 text-[9px] font-semibold uppercase leading-5 tracking-[0.16em] text-black/38">
+              JackNex Studio
+              <br />
+              Working with clients worldwide
+            </p>
           </div>
-
-          <p className="mt-5 font-serif text-[1.28rem] italic text-black/65">
-            Designer & Developer
-          </p>
-          <div className="mt-4 h-px w-10 bg-black/15" />
-          <p className="mt-4 text-[9px] font-semibold uppercase leading-5 tracking-[0.16em] text-black/38">
-            JackNex Studio
-            <br />
-            Working with clients worldwide
-          </p>
-        </div>
-
-        {/* Scene 4: work handoff */}
-        <div
-          data-mobile-scene="work"
-          className="pointer-events-none absolute inset-0 z-30 flex items-end px-5 pb-6 pt-28 opacity-0"
-        >
-          <a
-            href="#work"
-            className="pointer-events-auto w-full rounded-[28px] border border-black/10 bg-white/90 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.08)] backdrop-blur-xl"
-          >
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-black/35">
-                  Next
-                </p>
-                <h2 className="mt-1 text-[2rem] font-semibold tracking-[-0.045em]">
-                  Selected Work
-                </h2>
-                <p className="mt-2 max-w-[14rem] text-[11.5px] leading-5 text-black/50">
-                  Real projects. Different moods. One point of view.
-                </p>
-              </div>
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-black text-white">
-                <ArrowDown className="h-4 w-4" aria-hidden="true" />
-              </span>
-            </div>
-          </a>
         </div>
       </div>
 

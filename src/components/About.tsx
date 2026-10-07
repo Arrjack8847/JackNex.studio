@@ -9,9 +9,9 @@ const skills = [
   "Node.js",
   "Tailwind CSS",
   "Figma",
+  "GSAP",
   "Framer Motion",
   "Supabase",
-  "PostgreSQL",
   "UI/UX",
 ];
 
@@ -80,14 +80,14 @@ const About = () => {
                 className="absolute bottom-3 left-3 right-3 rounded-2xl border border-white/15 bg-black/35 p-4 backdrop-blur-md sm:bottom-5 sm:left-5 sm:right-5 sm:p-5"
               >
                 <p className="text-[10px] uppercase tracking-[0.16em] text-white/70 sm:text-[11px] sm:tracking-[0.18em]">
-                  Developer / Designer
+                  Designer / Developer
                 </p>
                 <h3 className="mt-2 text-lg font-semibold text-white sm:text-2xl">
-                  Building premium websites
+                  Cinematic + interactive websites
                 </h3>
                 <p className="mt-2 max-w-sm text-xs leading-relaxed text-white/75 sm:text-sm">
-                  Clean design, smooth motion, and modern experiences that help
-                  brands look more professional online.
+                  Premium visual direction, purposeful motion, and responsive
+                  experiences built to feel memorable.
                 </p>
               </motion.div>
             </motion.div>
@@ -114,7 +114,7 @@ const About = () => {
                 Current Focus
               </p>
               <p className="mt-1.5 text-xs font-semibold text-foreground sm:mt-2 sm:text-sm">
-                Modern websites that convert
+                Mobile-first experiences
               </p>
             </motion.div>
           </motion.div>
@@ -137,23 +137,22 @@ const About = () => {
               id="about-title"
               className="text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-5xl"
             >
-              I design and build
+              Design and development,
               <span className="block text-primary">
-                modern digital experiences
+                treated as one experience
               </span>
             </h2>
 
             <p className="text-sm leading-7 text-muted-foreground sm:text-lg sm:leading-relaxed">
-              I'm a developer and designer focused on creating modern websites
-              that look polished, feel smooth, and help brands present
-              themselves with confidence online.
+              I'm Jack, the designer and developer behind JackNex Studio. I build
+              websites where visual direction, interaction, and code work
+              together instead of feeling like separate layers.
             </p>
 
             <p className="text-sm leading-7 text-muted-foreground sm:text-base sm:leading-relaxed">
-              I care about clean layouts, strong visual direction, and user
-              experiences that feel premium from the first scroll to the final
-              click. My goal is to create websites that are not only beautiful,
-              but also effective.
+              My strongest work lives between brand websites and digital invitations:
+              projects that need to feel polished on desktop, intentional on
+              mobile, and memorable without becoming heavy or difficult to use.
             </p>
 
             <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-3 sm:gap-4 sm:pt-2">

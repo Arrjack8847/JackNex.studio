@@ -329,28 +329,28 @@ export default function Hero() {
                 duration: 0.8,
                 ease: "power2.inOut",
               },
-              7.05,
+              7.55,
             )
             .to(
               "[data-mobile-portrait]",
               {
-                top: "35%",
-                scale: 0.82,
+                top: "38%",
+                scale: 0.88,
                 autoAlpha: 0,
-                duration: 1,
+                duration: 0.55,
                 ease: "power2.inOut",
               },
-              7.05,
+              7.55,
             )
             .to(
               "[data-mobile-headline]",
               {
                 autoAlpha: 0,
-                y: -82,
-                duration: 0.8,
+                y: -78,
+                duration: 0.5,
                 ease: "none",
               },
-              7.1,
+              7.6,
             );
 
           return () => {
@@ -376,7 +376,7 @@ export default function Hero() {
 
   const mobileStoryHeight = prefersReducedMotion
     ? "min-h-[100svh]"
-    : "min-h-[270svh]";
+    : "min-h-[250svh]";
 
   return (
     <section

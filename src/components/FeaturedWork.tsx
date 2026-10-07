@@ -5,6 +5,7 @@ import { projects, type Project, type ProjectImage } from "@/config/site";
 import { gsap } from "@/lib/gsap";
 import { usePageVisible } from "@/hooks/use-page-visible";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import deviceMockup from "../../a3d6ea3a-85cb-470c-a14b-84ed186de83c-Photoroom.png";
 
 const AUTOPLAY_MS = 3200;
 const MANUAL_PAUSE_MS = 5000;
@@ -52,89 +53,92 @@ function ShowcaseMockup({
 }: ShowcaseMockupProps) {
   const desktopImage = project.desktopImages[currentIndex];
   const mobileImage = project.mobileImages[currentIndex];
-  const floatLaptop = prefersReducedMotion
-    ? { y: 0, rotate: -3 }
-    : { y: [0, -10, 0], rotate: [-3, -2, -3] };
-  const floatPhone = prefersReducedMotion
-    ? { y: 0, rotate: 5, scale: 1 }
-    : { y: [0, -14, 0], rotate: [5, 6, 5], scale: [1, 1.02, 1] };
+
+  const floatMockup = prefersReducedMotion
+    ? { y: 0, rotate: 0, scale: 1 }
+    : { y: [0, -8, 0], rotate: [0, -0.35, 0], scale: [1, 1.006, 1] };
 
   return (
-    <div className="relative flex items-center justify-center py-8 md:py-12">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
-      </div>
+    <div className="relative flex min-h-[300px] items-center justify-center py-4 sm:min-h-[360px] md:min-h-[430px] md:py-8">
+      <div className="pointer-events-none absolute inset-x-[8%] bottom-[8%] h-[22%] rounded-[50%] bg-black/10 blur-3xl" />
+      <div className="pointer-events-none absolute left-[22%] top-[22%] h-44 w-44 rounded-full bg-primary/8 blur-3xl md:h-64 md:w-64" />
 
       <motion.div
-        animate={floatLaptop}
+        animate={floatMockup}
         transition={{
-          duration: prefersReducedMotion ? 0 : 7,
+          duration: prefersReducedMotion ? 0 : 7.5,
           repeat: prefersReducedMotion ? 0 : Infinity,
           ease: "easeInOut",
         }}
-        className="relative z-10 w-[85%] max-w-[560px]"
+        className="relative z-10 aspect-[3/2] w-full max-w-[690px] origin-center"
       >
-        <div className="rounded-[26px] bg-[#111111] p-3 shadow-[0_35px_80px_rgba(0,0,0,0.22)]">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[18px] bg-black">
-            <motion.div
-              key={`desktop-${desktopImage.src}-${currentIndex}`}
-              initial={
-                prefersReducedMotion ? false : { opacity: 0.25, scale: 1.03 }
-              }
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.7,
-                ease: "easeOut",
-              }}
-              className="h-full w-full"
-            >
-              <ProjectPreviewImage
-                image={desktopImage}
-                sizes="(max-width: 1024px) 86vw, 560px"
-                className="h-full w-full object-contain"
-              />
-            </motion.div>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
-          </div>
+        <img
+          src={deviceMockup}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          className="pointer-events-none absolute inset-0 z-10 h-full w-full select-none object-contain"
+        />
+
+        <div
+          className="absolute left-[15.4%] top-[12.2%] z-20 h-[58.8%] w-[59.7%] overflow-hidden bg-white"
+          style={{
+            clipPath: "polygon(0.8% 6%, 99.3% 0%, 93.4% 96.6%, 5.3% 100%)",
+            transform: "rotate(-0.7deg) skewY(-0.2deg)",
+            transformOrigin: "center center",
+          }}
+        >
+          <motion.div
+            key={`desktop-${desktopImage.src}-${currentIndex}`}
+            initial={prefersReducedMotion ? false : { opacity: 0.35, scale: 1.025 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.65,
+              ease: "easeOut",
+            }}
+            className="h-full w-full"
+          >
+            <ProjectPreviewImage
+              image={desktopImage}
+              sizes="(max-width: 1024px) 76vw, 520px"
+              className="h-full w-full object-cover object-top"
+            />
+          </motion.div>
         </div>
 
-        <div className="mx-auto h-3 w-[92%] rounded-b-[18px] bg-[#1a1a1a]" />
-        <div className="mx-auto h-2 w-[28%] rounded-b-full bg-[#2a2a2a]" />
-      </motion.div>
-
-      <motion.div
-        animate={floatPhone}
-        transition={{
-          duration: prefersReducedMotion ? 0 : 6.5,
-          repeat: prefersReducedMotion ? 0 : Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute bottom-[2%] right-[4%] z-20 w-[22%] min-w-[110px] max-w-[150px]"
-      >
-        <div className="rounded-[28px] bg-[#111111] p-2 shadow-[0_25px_60px_rgba(0,0,0,0.28)]">
-          <div className="relative aspect-[9/20] overflow-hidden rounded-[22px] bg-black">
-            <motion.div
-              key={`mobile-${mobileImage.src}-${currentIndex}`}
-              initial={
-                prefersReducedMotion ? false : { opacity: 0.25, scale: 1.03 }
-              }
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.7,
-                ease: "easeOut",
-              }}
-              className="h-full w-full"
-            >
-              <ProjectPreviewImage
-                image={mobileImage}
-                sizes="150px"
-                className="h-full w-full object-contain object-top"
-              />
-            </motion.div>
-            <div className="pointer-events-none absolute left-1/2 top-2 z-10 h-1.5 w-10 -translate-x-1/2 rounded-full bg-black/70" />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
-          </div>
+        <div
+          className="absolute left-[68.1%] top-[25.3%] z-20 h-[64.9%] w-[22.6%] overflow-hidden rounded-[13%] bg-white"
+          style={{
+            clipPath: "polygon(11% 0%, 94% 7%, 82% 100%, 0% 91%)",
+            transform: "rotate(0.5deg)",
+            transformOrigin: "center center",
+          }}
+        >
+          <motion.div
+            key={`mobile-${mobileImage.src}-${currentIndex}`}
+            initial={prefersReducedMotion ? false : { opacity: 0.35, scale: 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.65,
+              ease: "easeOut",
+            }}
+            className="h-full w-full"
+          >
+            <ProjectPreviewImage
+              image={mobileImage}
+              sizes="180px"
+              className="h-full w-full object-cover object-top"
+            />
+          </motion.div>
         </div>
+
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-[77.5%] top-[27.2%] z-30 h-[1.8%] w-[7.2%] rounded-full bg-black"
+          style={{ transform: "rotate(4.5deg)" }}
+        />
+
+        <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-br from-white/8 via-transparent to-transparent" />
       </motion.div>
     </div>
   );

@@ -205,8 +205,8 @@ export default function Hero() {
               "[data-mobile-portrait]",
               {
                 left: "50%",
-                top: "60%",
-                scale: 1.34,
+                top: "58%",
+                scale: 1.16,
                 rotate: 0,
                 duration: 1.3,
                 ease: "power2.inOut",
@@ -217,25 +217,74 @@ export default function Hero() {
               "[data-mobile-craft]",
               {
                 autoAlpha: 0,
-                y: 28,
+                y: 24,
               },
               {
                 autoAlpha: 1,
                 y: 0,
-                duration: 0.8,
+                duration: 0.65,
                 ease: "power3.out",
               },
-              2.15,
+              2.05,
+            )
+            .fromTo(
+              "[data-mobile-craft-word]",
+              {
+                autoAlpha: 0,
+                y: 22,
+              },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.62,
+                stagger: 0.12,
+                ease: "power3.out",
+              },
+              2.2,
+            )
+            .fromTo(
+              "[data-mobile-craft-copy]",
+              {
+                autoAlpha: 0,
+                y: 14,
+              },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.55,
+                ease: "power2.out",
+              },
+              2.55,
+            )
+            .to(
+              "[data-mobile-craft-word]",
+              {
+                autoAlpha: 0,
+                y: -18,
+                duration: 0.5,
+                stagger: 0.08,
+                ease: "power2.inOut",
+              },
+              4.05,
+            )
+            .to(
+              "[data-mobile-craft-copy]",
+              {
+                autoAlpha: 0,
+                y: -12,
+                duration: 0.45,
+                ease: "power2.inOut",
+              },
+              4.12,
             )
             .to(
               "[data-mobile-craft]",
               {
                 autoAlpha: 0,
-                y: -24,
-                duration: 0.7,
-                ease: "power2.inOut",
+                duration: 0.45,
+                ease: "none",
               },
-              4.25,
+              4.2,
             )
             .to(
               "[data-mobile-portrait]",
@@ -476,19 +525,37 @@ export default function Hero() {
         {/* Scene 2 grows around the same portrait. */}
         <div
           data-mobile-craft
-          className="pointer-events-none absolute inset-x-5 top-[19%] z-20 text-center opacity-0"
+          className="pointer-events-none absolute inset-x-5 bottom-[10%] top-[17%] z-20 opacity-0"
         >
-          <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-black/35">
+          <p className="text-center text-[9px] font-semibold uppercase tracking-[0.28em] text-black/35">
             One connected workflow
           </p>
 
-          <div className="mt-5 space-y-0.5 text-[2.7rem] font-semibold leading-[0.88] tracking-[-0.06em]">
-            <div>DESIGN</div>
-            <div className="font-serif font-normal italic">development</div>
-            <div>MOTION</div>
+          <div
+            data-mobile-craft-word
+            className="absolute left-[2%] top-[12%] text-[2.85rem] font-semibold leading-none tracking-[-0.065em]"
+          >
+            DESIGN
           </div>
 
-          <p className="mx-auto mt-[15.5rem] max-w-[17rem] text-[12px] leading-5 text-black/45">
+          <div
+            data-mobile-craft-word
+            className="absolute right-[1%] top-[31%] font-serif text-[2.55rem] font-normal italic leading-none tracking-[-0.045em]"
+          >
+            development
+          </div>
+
+          <div
+            data-mobile-craft-word
+            className="absolute right-[7%] top-[54%] text-[2.7rem] font-semibold leading-none tracking-[-0.065em]"
+          >
+            MOTION
+          </div>
+
+          <p
+            data-mobile-craft-copy
+            className="absolute inset-x-0 bottom-[3%] mx-auto max-w-[17rem] text-center text-[11.5px] leading-5 text-black/45"
+          >
             Visual direction, code and interaction shaped as one experience.
           </p>
         </div>

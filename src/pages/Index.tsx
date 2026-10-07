@@ -13,8 +13,8 @@ const Index = () => {
       <Navbar />
       <Hero />
       <FeaturedWork />
-      <HowIWork />
       <Stats />
+      <HowIWork />
       <About />
       <ContactCTA />
     </div>
@@ -22,4 +22,3 @@ const Index = () => {
 };
 
 export default Index;
-

@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { projects, type Project, type ProjectImage } from "@/config/site";
+import { gsap } from "@/lib/gsap";
 import { usePageVisible } from "@/hooks/use-page-visible";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
@@ -140,6 +141,7 @@ function ShowcaseMockup({
 }
 
 const FeaturedWork = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeIndexes, setActiveIndexes] = useState<number[]>(
     projects.map(() => 0),
   );
@@ -176,6 +178,113 @@ const FeaturedWork = () => {
     };
   }, []);
 
+  useLayoutEffect(() => {
+    const root = sectionRef.current;
+
+    if (!root) {
+      return;
+    }
+
+    const media = gsap.matchMedia();
+
+    const context = gsap.context(() => {
+      media.add(
+        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          gsap.fromTo(
+            "[data-work-heading]",
+            {
+              autoAlpha: 0,
+              y: 64,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.85,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: "[data-work-heading]",
+                start: "top 88%",
+                toggleActions: "play none none none",
+              },
+            },
+          );
+
+          const firstProject = root.querySelector<HTMLElement>(
+            '[data-work-project="0"]',
+          );
+
+          if (!firstProject) {
+            return;
+          }
+
+          const firstProjectStory = gsap.timeline({
+            scrollTrigger: {
+              trigger: firstProject,
+              start: "top 91%",
+              end: "top 43%",
+              scrub: 0.68,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          firstProjectStory
+            .fromTo(
+              firstProject,
+              {
+                clipPath: "inset(7% 3% 7% 3% round 30px)",
+                scale: 0.965,
+                y: 58,
+              },
+              {
+                clipPath: "inset(0% 0% 0% 0% round 30px)",
+                scale: 1,
+                y: 0,
+                ease: "none",
+              },
+              0,
+            )
+            .fromTo(
+              '[data-work-visual="0"]',
+              {
+                y: 44,
+                scale: 0.94,
+              },
+              {
+                y: 0,
+                scale: 1,
+                ease: "none",
+              },
+              0,
+            )
+            .fromTo(
+              '[data-work-copy="0"]',
+              {
+                autoAlpha: 0.48,
+                y: 54,
+              },
+              {
+                autoAlpha: 1,
+                y: 0,
+                ease: "none",
+              },
+              0.1,
+            );
+
+          return () => {
+            firstProjectStory.scrollTrigger?.kill();
+            firstProjectStory.kill();
+          };
+        },
+      );
+    }, root);
+
+    return () => {
+      media.revert();
+      context.revert();
+    };
+  }, []);
+
   const pauseAfterManualInteraction = () => {
     setIsManuallyPaused(true);
 
@@ -196,6 +305,7 @@ const FeaturedWork = () => {
 
   return (
     <section
+      ref={sectionRef}
       id="work"
       className="relative scroll-mt-24 py-24 sm:py-28"
       onPointerEnter={() => setIsInteracting(true)}
@@ -205,34 +315,36 @@ const FeaturedWork = () => {
       aria-labelledby="featured-work-title"
     >
       <div className="mx-auto max-w-7xl px-6">
-        <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
-          className="mb-14 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between"
-        >
-          <div>
-            <div className="mb-4 flex items-center gap-3">
-              <div className="h-[2px] w-8 bg-primary" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-black/55 sm:text-sm">
-                Selected Work
-              </span>
+        <div data-work-heading>
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
+            className="mb-14 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between"
+          >
+            <div>
+              <div className="mb-4 flex items-center gap-3">
+                <div className="h-[2px] w-8 bg-primary" />
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-black/55 sm:text-sm">
+                  Selected Work
+                </span>
+              </div>
+              <h2
+                id="featured-work-title"
+                className="max-w-[12ch] text-3xl font-bold leading-[1.02] tracking-[-0.045em] text-foreground sm:text-4xl md:text-5xl"
+              >
+                Projects with a point of view.
+              </h2>
             </div>
-            <h2
-              id="featured-work-title"
-              className="max-w-[12ch] text-3xl font-bold leading-[1.02] tracking-[-0.045em] text-foreground sm:text-4xl md:text-5xl"
-            >
-              Projects with a point of view.
-            </h2>
-          </div>
 
-          <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
-            A selection of client work, interactive invitations, and
-            conversion-focused builds — each designed around a different
-            audience, mood, and purpose.
-          </p>
-        </motion.div>
+            <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
+              A selection of client work, interactive invitations, and
+              conversion-focused builds — each designed around a different
+              audience, mood, and purpose.
+            </p>
+          </motion.div>
+        </div>
 
         <div className="space-y-8 sm:space-y-10">
           {projects.map((project, projectIndex) => {
@@ -240,139 +352,148 @@ const FeaturedWork = () => {
             const isReverse = projectIndex % 2 !== 0;
 
             return (
-              <motion.article
+              <div
                 key={project.title}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: prefersReducedMotion ? 0 : 0.6,
-                  delay: prefersReducedMotion ? 0 : projectIndex * 0.08,
-                }}
-                className="glass-surface overflow-hidden rounded-[30px] border border-border/60"
+                data-work-project={String(projectIndex)}
               >
-                <div
-                  className={`grid items-center gap-10 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-2 lg:gap-14 ${
-                    isReverse ? "lg:[&>*:first-child]:order-2" : ""
-                  }`}
+                <motion.article
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.6,
+                    delay: prefersReducedMotion ? 0 : projectIndex * 0.08,
+                  }}
+                  className="glass-surface overflow-hidden rounded-[30px] border border-border/60"
                 >
-                  <ShowcaseMockup
-                    project={project}
-                    currentIndex={currentIndex}
-                    prefersReducedMotion={Boolean(prefersReducedMotion)}
-                  />
-
-                  <div className="flex flex-col justify-center">
-                    <div className="mb-3 flex items-center gap-3">
-                      <span className="text-[10px] font-semibold tracking-[0.18em] text-black/30">
-                        {String(projectIndex + 1).padStart(2, "0")}
-                      </span>
-                      <span className="text-xs font-medium uppercase tracking-[0.22em] text-primary">
-                        {project.category}
-                      </span>
+                  <div
+                    className={`grid items-center gap-10 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-2 lg:gap-14 ${
+                      isReverse ? "lg:[&>*:first-child]:order-2" : ""
+                    }`}
+                  >
+                    <div data-work-visual={String(projectIndex)}>
+                      <ShowcaseMockup
+                        project={project}
+                        currentIndex={currentIndex}
+                        prefersReducedMotion={Boolean(prefersReducedMotion)}
+                      />
                     </div>
 
-                    <h3 className="mb-4 text-2xl font-bold tracking-[-0.025em] text-foreground sm:text-3xl">
-                      {project.title}
-                    </h3>
-
-                    <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
-                      {project.description}
-                    </p>
-
-                    <dl className="my-6 grid grid-cols-2 gap-x-5 gap-y-4 border-y border-black/10 py-5 sm:grid-cols-3">
-                      <div>
-                        <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
-                          Role
-                        </dt>
-                        <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
-                          {project.role}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
-                          Focus
-                        </dt>
-                        <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
-                          {project.focus}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
-                          Year
-                        </dt>
-                        <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
-                          {project.year}
-                        </dd>
-                      </div>
-                    </dl>
-
-                    <div className="mb-6 flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-secondary px-3 py-1.5 text-xs text-muted-foreground"
-                        >
-                          {tag}
+                    <div
+                      data-work-copy={String(projectIndex)}
+                      className="flex flex-col justify-center"
+                    >
+                      <div className="mb-3 flex items-center gap-3">
+                        <span className="text-[10px] font-semibold tracking-[0.18em] text-black/30">
+                          {String(projectIndex + 1).padStart(2, "0")}
                         </span>
-                      ))}
-                    </div>
+                        <span className="text-xs font-medium uppercase tracking-[0.22em] text-primary">
+                          {project.category}
+                        </span>
+                      </div>
 
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-black/60"
-                      >
-                        Visit Project
-                        <ExternalLink
-                          className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                          aria-hidden="true"
-                        />
-                      </a>
+                      <h3 className="mb-4 text-2xl font-bold tracking-[-0.025em] text-foreground sm:text-3xl">
+                        {project.title}
+                      </h3>
 
-                      <div
-                        className="flex gap-1"
-                        role="group"
-                        aria-label={`${project.title} preview slides`}
-                      >
-                        {project.desktopImages.map((_, dotIndex) => {
-                          const isActive = currentIndex === dotIndex;
+                      <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
+                        {project.description}
+                      </p>
 
-                          return (
-                            <button
-                              key={`${project.title}-slide-${dotIndex}`}
-                              type="button"
-                              onClick={() => {
-                                setActiveIndexes((prev) =>
-                                  prev.map((value, index) =>
-                                    index === projectIndex ? dotIndex : value,
-                                  ),
-                                );
-                                pauseAfterManualInteraction();
-                              }}
-                              className="flex h-11 w-11 items-center justify-center rounded-full"
-                              aria-label={`Show ${project.title} slide ${
-                                dotIndex + 1
-                              }`}
-                              aria-current={isActive ? "true" : undefined}
-                            >
-                              <span
-                                className={`h-2.5 rounded-full transition-all duration-300 ${
-                                  isActive
-                                    ? "w-8 bg-primary"
-                                    : "w-2.5 bg-primary/25 hover:bg-primary/45"
+                      <dl className="my-6 grid grid-cols-2 gap-x-5 gap-y-4 border-y border-black/10 py-5 sm:grid-cols-3">
+                        <div>
+                          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
+                            Role
+                          </dt>
+                          <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
+                            {project.role}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
+                            Focus
+                          </dt>
+                          <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
+                            {project.focus}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
+                            Year
+                          </dt>
+                          <dd className="mt-1.5 text-xs font-medium text-black/70 sm:text-sm">
+                            {project.year}
+                          </dd>
+                        </div>
+                      </dl>
+
+                      <div className="mb-6 flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-secondary px-3 py-1.5 text-xs text-muted-foreground"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-black/60"
+                        >
+                          Visit Project
+                          <ExternalLink
+                            className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                            aria-hidden="true"
+                          />
+                        </a>
+
+                        <div
+                          className="flex gap-1"
+                          role="group"
+                          aria-label={`${project.title} preview slides`}
+                        >
+                          {project.desktopImages.map((_, dotIndex) => {
+                            const isActive = currentIndex === dotIndex;
+
+                            return (
+                              <button
+                                key={`${project.title}-slide-${dotIndex}`}
+                                type="button"
+                                onClick={() => {
+                                  setActiveIndexes((prev) =>
+                                    prev.map((value, index) =>
+                                      index === projectIndex ? dotIndex : value,
+                                    ),
+                                  );
+                                  pauseAfterManualInteraction();
+                                }}
+                                className="flex h-11 w-11 items-center justify-center rounded-full"
+                                aria-label={`Show ${project.title} slide ${
+                                  dotIndex + 1
                                 }`}
-                              />
-                            </button>
-                          );
-                        })}
+                                aria-current={isActive ? "true" : undefined}
+                              >
+                                <span
+                                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                                    isActive
+                                      ? "w-8 bg-primary"
+                                      : "w-2.5 bg-primary/25 hover:bg-primary/45"
+                                  }`}
+                                />
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.article>
+                </motion.article>
+              </div>
             );
           })}
         </div>

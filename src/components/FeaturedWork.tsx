@@ -62,7 +62,7 @@ function ShowcaseMockup({
     : { y: [0, -11, 0], scale: [1, 1.012, 1] };
 
   return (
-    <div className="relative mx-auto aspect-[4/3] w-full max-w-[720px]">
+    <div className="relative mx-auto h-[30svh] min-h-[230px] max-h-[290px] w-full max-w-[720px] md:aspect-[4/3] md:h-auto md:min-h-0 md:max-h-none">
       <div className="pointer-events-none absolute left-[10%] top-[18%] h-[52%] w-[62%] rounded-full bg-primary/8 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[6%] left-[10%] right-[4%] h-[12%] rounded-[50%] bg-black/10 blur-2xl" />
 
@@ -324,7 +324,7 @@ const FeaturedWork = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
-            className="mb-14 flex flex-col gap-5 md:mb-16 md:flex-row md:items-end md:justify-between"
+            className="mb-6 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between"
           >
             <div>
               <div className="mb-4 flex items-center gap-3">
@@ -349,7 +349,7 @@ const FeaturedWork = () => {
           </motion.div>
         </div>
 
-        <div className="space-y-8 sm:space-y-10">
+        <div className="space-y-4 sm:space-y-6 md:space-y-10">
           {projects.map((project, projectIndex) => {
             const currentIndex = activeIndexes[projectIndex];
             const isReverse = projectIndex % 2 !== 0;
@@ -367,10 +367,10 @@ const FeaturedWork = () => {
                     duration: prefersReducedMotion ? 0 : 0.6,
                     delay: prefersReducedMotion ? 0 : projectIndex * 0.08,
                   }}
-                  className="glass-surface overflow-hidden rounded-[30px] border border-border/60"
+                  className="glass-surface min-h-[calc(100svh-5rem)] scroll-mt-[5rem] overflow-hidden rounded-[30px] border border-border/60 md:min-h-0 md:scroll-mt-0"
                 >
                   <div
-                    className={`grid items-center gap-10 px-6 py-8 md:px-8 md:py-10 lg:grid-cols-2 lg:gap-14 ${
+                    className={`grid items-center gap-3 px-4 py-4 sm:gap-5 sm:px-6 sm:py-6 md:px-8 md:py-10 lg:grid-cols-2 lg:gap-14 ${
                       isReverse ? "lg:[&>*:first-child]:order-2" : ""
                     }`}
                   >
@@ -384,9 +384,9 @@ const FeaturedWork = () => {
 
                     <div
                       data-work-copy={String(projectIndex)}
-                      className="flex flex-col justify-center"
+                      className="flex min-h-0 flex-col justify-center"
                     >
-                      <div className="mb-3 flex items-center gap-3">
+                      <div className="mb-2 flex items-center gap-3 md:mb-3">
                         <span className="text-[10px] font-semibold tracking-[0.18em] text-black/30">
                           {String(projectIndex + 1).padStart(2, "0")}
                         </span>
@@ -395,15 +395,27 @@ const FeaturedWork = () => {
                         </span>
                       </div>
 
-                      <h3 className="mb-4 text-2xl font-bold tracking-[-0.025em] text-foreground sm:text-3xl">
+                      <h3 className="mb-2 text-[1.7rem] font-bold leading-[1.02] tracking-[-0.035em] text-foreground sm:text-3xl md:mb-4">
                         {project.title}
                       </h3>
 
-                      <p className="max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
+                      <p className="max-w-[32rem] text-[13px] leading-5 text-muted-foreground md:hidden">
+                        {project.mobileDescription ?? project.description}
+                      </p>
+
+                      <p className="hidden max-w-xl text-sm leading-7 text-muted-foreground sm:text-base md:block">
                         {project.description}
                       </p>
 
-                      <dl className="my-6 grid grid-cols-2 gap-x-5 gap-y-4 border-y border-black/10 py-5 sm:grid-cols-3">
+                      <div className="my-3 flex flex-wrap items-center gap-x-2 gap-y-1 border-y border-black/10 py-2.5 text-[10px] font-medium leading-4 text-black/55 md:hidden">
+                        <span>{project.role}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{project.focus}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{project.year}</span>
+                      </div>
+
+                      <dl className="my-6 hidden grid-cols-2 gap-x-5 gap-y-4 border-y border-black/10 py-5 sm:grid-cols-3 md:grid">
                         <div>
                           <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-black/35">
                             Role
@@ -430,7 +442,18 @@ const FeaturedWork = () => {
                         </div>
                       </dl>
 
-                      <div className="mb-6 flex flex-wrap gap-2">
+                      <div className="mb-3 flex flex-wrap gap-1.5 md:hidden">
+                        {project.tags.slice(0, 2).map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-secondary px-2.5 py-1 text-[10px] text-muted-foreground"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mb-6 hidden flex-wrap gap-2 md:flex">
                         {project.tags.map((tag) => (
                           <span
                             key={tag}
@@ -441,12 +464,12 @@ const FeaturedWork = () => {
                         ))}
                       </div>
 
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                      <div className="flex items-center justify-between gap-3 md:justify-start md:gap-4">
                         <a
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-black/60"
+                          className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-black/60"
                         >
                           Visit Project
                           <ExternalLink
@@ -456,7 +479,7 @@ const FeaturedWork = () => {
                         </a>
 
                         <div
-                          className="flex gap-1"
+                          className="flex shrink-0 gap-0.5 md:gap-1"
                           role="group"
                           aria-label={`${project.title} preview slides`}
                         >
@@ -475,7 +498,7 @@ const FeaturedWork = () => {
                                   );
                                   pauseAfterManualInteraction();
                                 }}
-                                className="flex h-11 w-11 items-center justify-center rounded-full"
+                                className="flex h-10 w-9 items-center justify-center rounded-full md:h-11 md:w-11"
                                 aria-label={`Show ${project.title} slide ${
                                   dotIndex + 1
                                 }`}

@@ -5,8 +5,9 @@ import {
   useTransform,
 } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { siteConfig } from "@/config/site";
+import { gsap } from "@/lib/gsap";
 import { useAnimationSettings } from "@/hooks/use-animation-settings";
 import { usePageVisible } from "@/hooks/use-page-visible";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
@@ -22,6 +23,7 @@ function createHeroParticles(count: number) {
 }
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
   const settings = useAnimationSettings();
   const isPageVisible = usePageVisible();
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -52,6 +54,110 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", handleMove);
   }, [isPageVisible, mouseX, mouseY, shouldUseParallax]);
 
+  useLayoutEffect(() => {
+    const root = sectionRef.current;
+
+    if (!root) {
+      return;
+    }
+
+    const media = gsap.matchMedia();
+
+    const context = gsap.context(() => {
+      media.add(
+        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          const intro = gsap.timeline({
+            defaults: {
+              ease: "power3.out",
+            },
+          });
+
+          intro
+            .fromTo(
+              "[data-hero-intro-copy]",
+              {
+                autoAlpha: 0,
+                y: 30,
+              },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.82,
+              },
+            )
+            .fromTo(
+              "[data-hero-intro-visual]",
+              {
+                autoAlpha: 0.76,
+                clipPath: "inset(9% 5% 9% 5% round 30px)",
+                scale: 1.045,
+                y: 26,
+              },
+              {
+                autoAlpha: 1,
+                clipPath: "inset(0% 0% 0% 0% round 0px)",
+                scale: 1,
+                y: 0,
+                duration: 1.05,
+              },
+              "-=0.42",
+            );
+
+          const scrollStory = gsap.timeline({
+            scrollTrigger: {
+              trigger: root,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.8,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          scrollStory
+            .to(
+              "[data-hero-scroll-copy]",
+              {
+                yPercent: -9,
+                scale: 0.985,
+                autoAlpha: 0.22,
+                ease: "none",
+              },
+              0,
+            )
+            .to(
+              "[data-hero-scroll-visual]",
+              {
+                yPercent: -5,
+                scale: 1.035,
+                ease: "none",
+              },
+              0,
+            )
+            .to(
+              "[data-hero-photo-shade]",
+              {
+                opacity: 0.52,
+                ease: "none",
+              },
+              0.08,
+            );
+
+          return () => {
+            intro.kill();
+            scrollStory.scrollTrigger?.kill();
+            scrollStory.kill();
+          };
+        },
+      );
+    }, root);
+
+    return () => {
+      media.revert();
+      context.revert();
+    };
+  }, []);
+
   const heroParticles = useMemo(
     () => createHeroParticles(settings.heroParticleCount),
     [settings.heroParticleCount],
@@ -60,12 +166,16 @@ export default function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       id="top"
       className="relative min-h-[100svh] scroll-mt-24 overflow-hidden text-black"
     >
       <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] grid-cols-1 lg:grid-cols-2">
-        <div className="flex items-center px-5 pb-12 pt-28 sm:px-8 md:px-12 lg:px-16 xl:px-20">
-          <div className="max-w-[720px]">
+        <div
+          data-hero-scroll-copy
+          className="flex items-center px-5 pb-12 pt-28 sm:px-8 md:px-12 lg:px-16 xl:px-20"
+        >
+          <div data-hero-intro-copy className="max-w-[720px]">
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -157,66 +267,81 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative h-[70vh] w-full overflow-hidden sm:h-[80vh] lg:h-screen">
-          <motion.img
-            src="/hero-man.webp"
-            alt="JackNex Studio designer and developer portrait"
-            width={1280}
-            height={739}
-            loading="eager"
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-cover grayscale gpu smooth-transform"
-            style={shouldUseParallax ? { x: imgX, y: imgY } : undefined}
-            animate={
-              shouldAnimate
-                ? {
-                    y: [0, settings.profile === "mobile" ? -5 : -6, 0],
-                    scale: [1, settings.profile === "mobile" ? 1.01 : 1.02, 1],
+        <div
+          data-hero-scroll-visual
+          className="relative h-[70vh] w-full overflow-hidden sm:h-[80vh] lg:h-screen"
+        >
+          <div
+            data-hero-intro-visual
+            className="absolute inset-0 overflow-hidden"
+          >
+            <motion.img
+              src="/hero-man.webp"
+              alt="JackNex Studio designer and developer portrait"
+              width={1280}
+              height={739}
+              loading="eager"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover grayscale gpu smooth-transform"
+              style={shouldUseParallax ? { x: imgX, y: imgY } : undefined}
+              animate={
+                shouldAnimate
+                  ? {
+                      y: [0, settings.profile === "mobile" ? -5 : -6, 0],
+                      scale: [1, settings.profile === "mobile" ? 1.01 : 1.02, 1],
+                    }
+                  : { y: 0, scale: 1 }
+              }
+              transition={{
+                duration: shouldAnimate
+                  ? settings.profile === "mobile"
+                    ? 8
+                    : 10
+                  : 0,
+                repeat: shouldAnimate ? Infinity : 0,
+                ease: "easeInOut",
+              }}
+            />
+
+            <div
+              data-hero-photo-shade
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/5 lg:bg-gradient-to-r lg:from-[#f6f6f4]/20 lg:via-transparent lg:to-transparent"
+            />
+
+            <div className="pointer-events-none absolute inset-0 z-[2]">
+              {heroParticles.map((particle) => (
+                <motion.span
+                  key={particle.id}
+                  className="absolute block rounded-full bg-white/35 mix-blend-overlay"
+                  style={{
+                    width: particle.size,
+                    height: particle.size,
+                    left: `${particle.left}%`,
+                    top: `${particle.top}%`,
+                    willChange: shouldAnimate ? "transform, opacity" : "auto",
+                  }}
+                  animate={
+                    shouldAnimate
+                      ? {
+                          y: [0, -particleTravel, 0],
+                          x: [0, 6, -4, 0],
+                          opacity: [0.18, 0.48, 0.18],
+                        }
+                      : { x: 0, y: 0, opacity: 0.2 }
                   }
-                : { y: 0, scale: 1 }
-            }
-            transition={{
-              duration: shouldAnimate ? (settings.profile === "mobile" ? 8 : 10) : 0,
-              repeat: shouldAnimate ? Infinity : 0,
-              ease: "easeInOut",
-            }}
-          />
+                  transition={{
+                    duration: shouldAnimate ? 6 : 0,
+                    repeat: shouldAnimate ? Infinity : 0,
+                    ease: "easeInOut",
+                    delay: particle.delay,
+                  }}
+                />
+              ))}
+            </div>
 
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/5 lg:bg-gradient-to-r lg:from-[#f6f6f4]/20 lg:via-transparent lg:to-transparent" />
-
-          <div className="pointer-events-none absolute inset-0 z-[2]">
-            {heroParticles.map((particle) => (
-              <motion.span
-                key={particle.id}
-                className="absolute block rounded-full bg-white/35 mix-blend-overlay"
-                style={{
-                  width: particle.size,
-                  height: particle.size,
-                  left: `${particle.left}%`,
-                  top: `${particle.top}%`,
-                  willChange: shouldAnimate ? "transform, opacity" : "auto",
-                }}
-                animate={
-                  shouldAnimate
-                    ? {
-                        y: [0, -particleTravel, 0],
-                        x: [0, 6, -4, 0],
-                        opacity: [0.18, 0.48, 0.18],
-                      }
-                    : { x: 0, y: 0, opacity: 0.2 }
-                }
-                transition={{
-                  duration: shouldAnimate ? 6 : 0,
-                  repeat: shouldAnimate ? Infinity : 0,
-                  ease: "easeInOut",
-                  delay: particle.delay,
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="absolute bottom-5 left-5 z-10 rounded-full border border-white/20 bg-black/25 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-white/80 backdrop-blur-md sm:bottom-7 sm:left-7">
-            Jack · Designer & Developer
+            <div className="absolute bottom-5 left-5 z-10 rounded-full border border-white/20 bg-black/25 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-white/80 backdrop-blur-md sm:bottom-7 sm:left-7">
+              Jack · Designer & Developer
+            </div>
           </div>
         </div>
       </div>

@@ -5,7 +5,6 @@ import { projects, type Project, type ProjectImage } from "@/config/site";
 import { gsap } from "@/lib/gsap";
 import { usePageVisible } from "@/hooks/use-page-visible";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
-import deviceMockup from "../../a3d6ea3a-85cb-470c-a14b-84ed186de83c-Photoroom.png";
 
 const AUTOPLAY_MS = 3200;
 const MANUAL_PAUSE_MS = 5000;
@@ -54,91 +53,91 @@ function ShowcaseMockup({
   const desktopImage = project.desktopImages[currentIndex];
   const mobileImage = project.mobileImages[currentIndex];
 
-  const floatMockup = prefersReducedMotion
-    ? { y: 0, rotate: 0, scale: 1 }
-    : { y: [0, -8, 0], rotate: [0, -0.35, 0], scale: [1, 1.006, 1] };
+  const laptopFloat = prefersReducedMotion
+    ? { y: 0, scale: 1 }
+    : { y: [0, -7, 0], scale: [1, 1.004, 1] };
+
+  const phoneFloat = prefersReducedMotion
+    ? { y: 0, scale: 1 }
+    : { y: [0, -11, 0], scale: [1, 1.012, 1] };
 
   return (
-    <div className="relative flex min-h-[300px] items-center justify-center py-4 sm:min-h-[360px] md:min-h-[430px] md:py-8">
-      <div className="pointer-events-none absolute inset-x-[8%] bottom-[8%] h-[22%] rounded-[50%] bg-black/10 blur-3xl" />
-      <div className="pointer-events-none absolute left-[22%] top-[22%] h-44 w-44 rounded-full bg-primary/8 blur-3xl md:h-64 md:w-64" />
+    <div className="relative mx-auto aspect-[4/3] w-full max-w-[720px]">
+      <div className="pointer-events-none absolute left-[10%] top-[18%] h-[52%] w-[62%] rounded-full bg-primary/8 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-[6%] left-[10%] right-[4%] h-[12%] rounded-[50%] bg-black/10 blur-2xl" />
 
       <motion.div
-        animate={floatMockup}
+        animate={laptopFloat}
         transition={{
           duration: prefersReducedMotion ? 0 : 7.5,
           repeat: prefersReducedMotion ? 0 : Infinity,
           ease: "easeInOut",
         }}
-        className="relative z-10 aspect-[3/2] w-full max-w-[690px] origin-center"
+        className="absolute left-[1%] top-[5%] z-10 aspect-[1448/1086] w-[91%] origin-center"
       >
-        <img
-          src={deviceMockup}
-          alt=""
-          aria-hidden="true"
-          draggable={false}
-          className="pointer-events-none absolute inset-0 z-10 h-full w-full select-none object-contain"
-        />
-
-        <div
-          className="absolute left-[15.4%] top-[12.2%] z-20 h-[58.8%] w-[59.7%] overflow-hidden bg-white"
-          style={{
-            clipPath: "polygon(0.8% 6%, 99.3% 0%, 93.4% 96.6%, 5.3% 100%)",
-            transform: "rotate(-0.7deg) skewY(-0.2deg)",
-            transformOrigin: "center center",
-          }}
-        >
+        <div className="absolute left-[14.5%] top-[14.73%] z-0 h-[55.52%] w-[70.99%] overflow-hidden rounded-[1.4%] bg-black">
           <motion.div
             key={`desktop-${desktopImage.src}-${currentIndex}`}
-            initial={prefersReducedMotion ? false : { opacity: 0.35, scale: 1.025 }}
+            initial={prefersReducedMotion ? false : { opacity: 0.3, scale: 1.02 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
-              duration: prefersReducedMotion ? 0 : 0.65,
+              duration: prefersReducedMotion ? 0 : 0.6,
               ease: "easeOut",
             }}
             className="h-full w-full"
           >
             <ProjectPreviewImage
               image={desktopImage}
-              sizes="(max-width: 1024px) 76vw, 520px"
+              sizes="(max-width: 767px) 90vw, (max-width: 1024px) 56vw, 560px"
               className="h-full w-full object-cover object-top"
             />
           </motion.div>
         </div>
 
-        <div
-          className="absolute left-[68.1%] top-[25.3%] z-20 h-[64.9%] w-[22.6%] overflow-hidden rounded-[13%] bg-white"
-          style={{
-            clipPath: "polygon(11% 0%, 94% 7%, 82% 100%, 0% 91%)",
-            transform: "rotate(0.5deg)",
-            transformOrigin: "center center",
-          }}
-        >
+        <img
+          src="/mockups/laptop.png"
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          className="pointer-events-none absolute inset-0 z-10 h-full w-full select-none object-contain drop-shadow-[0_24px_28px_rgba(0,0,0,0.18)]"
+        />
+      </motion.div>
+
+      <motion.div
+        animate={phoneFloat}
+        transition={{
+          duration: prefersReducedMotion ? 0 : 6.5,
+          repeat: prefersReducedMotion ? 0 : Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute bottom-[-1%] right-[-3%] z-20 aspect-[1122/1402] w-[36%] origin-center sm:right-[-1%] sm:w-[34%]"
+      >
+        <div className="absolute left-[26.29%] top-[8.06%] z-0 h-[83.95%] w-[47.68%] overflow-hidden rounded-[8%] bg-black">
           <motion.div
             key={`mobile-${mobileImage.src}-${currentIndex}`}
-            initial={prefersReducedMotion ? false : { opacity: 0.35, scale: 1.03 }}
+            initial={prefersReducedMotion ? false : { opacity: 0.3, scale: 1.025 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
-              duration: prefersReducedMotion ? 0 : 0.65,
+              duration: prefersReducedMotion ? 0 : 0.6,
               ease: "easeOut",
             }}
             className="h-full w-full"
           >
             <ProjectPreviewImage
               image={mobileImage}
-              sizes="180px"
+              sizes="(max-width: 767px) 24vw, 170px"
               className="h-full w-full object-cover object-top"
             />
           </motion.div>
         </div>
 
-        <div
+        <img
+          src="/mockups/phone.png"
+          alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute left-[77.5%] top-[27.2%] z-30 h-[1.8%] w-[7.2%] rounded-full bg-black"
-          style={{ transform: "rotate(4.5deg)" }}
+          draggable={false}
+          className="pointer-events-none absolute inset-0 z-10 h-full w-full select-none object-contain drop-shadow-[0_22px_24px_rgba(0,0,0,0.2)]"
         />
-
-        <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-br from-white/8 via-transparent to-transparent" />
       </motion.div>
     </div>
   );

@@ -19,7 +19,7 @@ export type Project = {
   link: string;
 };
 
-const whatsappNumber = "60175052024";
+const whatsappNumber = "601114092340";
 const viberNumber = "+959428502373";
 
 const projectInquiryMessage =

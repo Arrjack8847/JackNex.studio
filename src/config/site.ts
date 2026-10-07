@@ -1,4 +1,3 @@
-
 export type ProjectImage = {
   src: string;
   previewSrc?: string;
@@ -12,6 +11,9 @@ export type Project = {
   category: string;
   tags: string[];
   description: string;
+  role: string;
+  focus: string;
+  year: string;
   desktopImages: ProjectImage[];
   mobileImages: ProjectImage[];
   link: string;
@@ -26,15 +28,15 @@ const projectInquiryMessage =
 export const siteConfig = {
   name: "JackNex Studio",
   url: "https://jacknex.studio",
-  title: "JackNex Studio | Web Design & Development",
+  title: "JackNex Studio | Cinematic & Interactive Websites",
   description:
-    "JackNex Studio builds modern, high-converting websites with premium design, smooth UX, and powerful performance.",
+    "JackNex Studio designs and develops cinematic, interactive, mobile-first websites for brands, businesses, and meaningful celebrations.",
 
   email: "smks8847@gmail.com",
 
   contact: {
     whatsapp: {
-      label: "Discuss Your Project",
+      label: "Start a Project",
       href: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
         projectInquiryMessage,
       )}`,
@@ -57,16 +59,20 @@ export const siteConfig = {
 
 export const navLinks = [
   {
-    label: "About Me",
-    href: "#about",
+    label: "Work",
+    href: "#work",
   },
   {
-    label: "Portfolio",
-    href: "#work",
+    label: "Services",
+    href: "#services",
   },
   {
     label: "Process",
     href: "#process",
+  },
+  {
+    label: "About",
+    href: "#about",
   },
   {
     label: "Contact",
@@ -89,22 +95,27 @@ export const socialLinks = [
   },
 ] as const;
 
-export const portfolioStats = [
+export const services = [
   {
-    value: "10+",
-    label: "Projects Built",
+    number: "01",
+    title: "Brand & Business Websites",
+    description:
+      "Premium responsive websites that make businesses look established, clear, and credible from the first screen.",
+    detail: "Strategy · UI direction · Development",
   },
   {
-    value: "3",
-    label: "Featured Projects",
+    number: "02",
+    title: "Digital Invitations",
+    description:
+      "Mobile-first invitation experiences for weddings, family celebrations, and meaningful events with elegant storytelling.",
+    detail: "Invitation UX · RSVP-ready · Mobile-first",
   },
   {
-    value: "Responsive",
-    label: "Development",
-  },
-  {
-    value: "Modern",
-    label: "Web Experiences",
+    number: "03",
+    title: "Motion & Interaction",
+    description:
+      "Cinematic openings, transitions, scroll motion, and micro-interactions designed to feel memorable without sacrificing usability.",
+    detail: "GSAP · Framer Motion · Performance",
   },
 ] as const;
 
@@ -114,22 +125,25 @@ export const aboutStats = [
     label: "Projects Built",
   },
   {
-    value: "Modern",
-    label: "Design Style",
+    value: "Mobile-first",
+    label: "Experience Focus",
   },
   {
-    value: "Fast",
-    label: "Delivery Focus",
+    value: "Design + Code",
+    label: "One Workflow",
   },
 ] as const;
 
 export const projects: Project[] = [
   {
-    title: "Elegant Star Wedding Platform",
-    category: "Full-Stack Web App",
-    tags: ["React", "TypeScript", "Supabase"],
+    title: "Elegant Star Myanmar",
+    category: "Client Website",
+    tags: ["Next.js", "TypeScript", "GSAP"],
     description:
-      "A modern wedding platform for browsing designs, placing orders, and managing bookings.",
+      "A premium editorial website for a Yangon invitation studio, combining product discovery, celebration storytelling, craftsmanship content, and enquiry-focused UX into one polished experience.",
+    role: "Design + Development",
+    focus: "Editorial UX / Brand Presence",
+    year: "2026",
 
     desktopImages: [
       {
@@ -137,21 +151,21 @@ export const projects: Project[] = [
         previewSrc: "/projects/project2/project1-preview.jpg",
         width: 1920,
         height: 1080,
-        alt: "Elegant Star wedding platform desktop homepage preview",
+        alt: "Elegant Star Myanmar wedding invitation studio desktop homepage preview",
       },
       {
         src: "/projects/project2/project2.webp",
         previewSrc: "/projects/project2/project2-preview.jpg",
         width: 1920,
         height: 1080,
-        alt: "Elegant Star wedding platform desktop package browsing preview",
+        alt: "Elegant Star Myanmar collection browsing desktop preview",
       },
       {
         src: "/projects/project2/project3.webp",
         previewSrc: "/projects/project2/project3-preview.jpg",
         width: 1920,
         height: 1080,
-        alt: "Elegant Star wedding platform desktop booking management preview",
+        alt: "Elegant Star Myanmar enquiry experience desktop preview",
       },
     ],
 
@@ -160,86 +174,34 @@ export const projects: Project[] = [
         src: "/projects/project2/pproject1.webp",
         width: 960,
         height: 2079,
-        alt: "Elegant Star wedding platform mobile homepage preview",
+        alt: "Elegant Star Myanmar mobile homepage preview",
       },
       {
         src: "/projects/project2/pproject2.webp",
         width: 960,
         height: 2079,
-        alt: "Elegant Star wedding platform mobile design browsing preview",
+        alt: "Elegant Star Myanmar mobile collection browsing preview",
       },
       {
         src: "/projects/project2/pproject3.webp",
         width: 960,
         height: 2079,
-        alt: "Elegant Star wedding platform mobile booking preview",
+        alt: "Elegant Star Myanmar mobile enquiry preview",
       },
     ],
 
-    link: "https://final-elegent-star.vercel.app/",
+    link: "https://elegantstarinvites.com/",
   },
 
   {
-    title: "Power House Gym Website",
-    category: "Fitness Website",
-    tags: ["React", "Tailwind", "Responsive"],
-    description:
-      "A bold gym website designed to attract members and showcase training programs.",
-
-    desktopImages: [
-      {
-        src: "/projects/project1/project1.webp",
-        previewSrc: "/projects/project1/project1-preview.jpg",
-        width: 1920,
-        height: 1080,
-        alt: "Power House Gym desktop homepage preview",
-      },
-      {
-        src: "/projects/project1/project2.webp",
-        previewSrc: "/projects/project1/project2-preview.jpg",
-        width: 1920,
-        height: 1079,
-        alt: "Power House Gym desktop programs preview",
-      },
-      {
-        src: "/projects/project1/project3.webp",
-        previewSrc: "/projects/project1/project3-preview.jpg",
-        width: 1920,
-        height: 1080,
-        alt: "Power House Gym desktop pricing preview",
-      },
-    ],
-
-    mobileImages: [
-      {
-        src: "/projects/project1/pproject1.webp",
-        width: 591,
-        height: 1280,
-        alt: "Power House Gym mobile homepage preview",
-      },
-      {
-        src: "/projects/project1/pproject2.webp",
-        width: 960,
-        height: 2079,
-        alt: "Power House Gym mobile programs preview",
-      },
-      {
-        src: "/projects/project1/pproject3.webp",
-        width: 960,
-        height: 2079,
-        alt: "Power House Gym mobile pricing preview",
-      },
-    ],
-
-    link: "https://power-house-coral.vercel.app/",
-  },
-
-  {
-    title: "Cinematic Wedding Invitation Website",
-    category: "Wedding Website",
+    title: "Cinematic Wedding Invitation",
+    category: "Interactive Invitation",
     tags: ["React", "Framer Motion", "Responsive"],
     description:
-      "A cinematic wedding invitation website designed to turn a love story into an interactive digital experience, with smooth animations, elegant UI, and optimized mobile design.",
+      "An immersive digital wedding invitation that turns a traditional invite into an interactive experience through elegant motion, layered storytelling, and mobile-first interaction.",
+    role: "Interaction Design + Development",
+    focus: "Motion / Mobile Experience",
+    year: "2026",
 
     desktopImages: [
       {
@@ -288,5 +250,62 @@ export const projects: Project[] = [
 
     link: "https://wedding-invation1.vercel.app/",
   },
-];
 
+  {
+    title: "Power House Gym",
+    category: "Conversion Website",
+    tags: ["React", "Tailwind", "Responsive"],
+    description:
+      "A bold, conversion-focused fitness website built around strong visual hierarchy, clear training offers, responsive layouts, and direct membership calls to action.",
+    role: "Design + Development",
+    focus: "Conversion / Responsive UX",
+    year: "2026",
+
+    desktopImages: [
+      {
+        src: "/projects/project1/project1.webp",
+        previewSrc: "/projects/project1/project1-preview.jpg",
+        width: 1920,
+        height: 1080,
+        alt: "Power House Gym desktop homepage preview",
+      },
+      {
+        src: "/projects/project1/project2.webp",
+        previewSrc: "/projects/project1/project2-preview.jpg",
+        width: 1920,
+        height: 1079,
+        alt: "Power House Gym desktop programs preview",
+      },
+      {
+        src: "/projects/project1/project3.webp",
+        previewSrc: "/projects/project1/project3-preview.jpg",
+        width: 1920,
+        height: 1080,
+        alt: "Power House Gym desktop pricing preview",
+      },
+    ],
+
+    mobileImages: [
+      {
+        src: "/projects/project1/pproject1.webp",
+        width: 591,
+        height: 1280,
+        alt: "Power House Gym mobile homepage preview",
+      },
+      {
+        src: "/projects/project1/pproject2.webp",
+        width: 960,
+        height: 2079,
+        alt: "Power House Gym mobile programs preview",
+      },
+      {
+        src: "/projects/project1/pproject3.webp",
+        width: 960,
+        height: 2079,
+        alt: "Power House Gym mobile pricing preview",
+      },
+    ],
+
+    link: "https://power-house-coral.vercel.app/",
+  },
+];

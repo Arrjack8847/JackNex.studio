@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#151512" />
+  <meta name="description" content="Konsep laman web untuk Jong Barbershop Puchong. Lihat inspirasi gaya rambut, lokasi kedai dan hubungi melalui WhatsApp." />
+  <title>Jong Barbershop Puchong — Konsep Laman Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#151512; --surface:#1b1b17; --surface2:#24231e; --cream:#f1eee6; --muted:#b1aa9d; --copper:#d29a64; --line:rgba(241,238,230,.14); --page: min(1180px, calc(100% - 64px)); }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:90px; }
+    body { margin:0; background:var(--ink); color:var(--cream); font:400 15px/1.6 "DM Sans", sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+    button { font:inherit; }
+    :focus-visible { outline:3px solid var(--copper); outline-offset:4px; }
+    ::selection { background:var(--copper); color:var(--ink); }
+    .container { width:var(--page); margin-inline:auto; }
+    .eyebrow { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.22em; color:var(--copper); }
+    .display { font-family:"Barlow Condensed", Impact, sans-serif; text-transform:uppercase; letter-spacing:-.027em; line-height:.91; font-weight:800; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:13px; font-weight:700; font-size:13px; letter-spacing:.02em; padding:17px 25px; border:1px solid transparent; min-height:52px; cursor:pointer; transition:transform .2s ease, background .2s ease, color .2s ease; }
+    .btn:hover { transform:translateY(-2px); }
+    .btn-primary { background:var(--copper); color:#171511; }
+    .btn-primary:hover { background:#e5b480; }
+    .btn-outline { border-color:rgba(241,238,230,.45); color:var(--cream); background:transparent; }
+    .btn-outline:hover { background:var(--cream); color:var(--ink); }
+    .arrow { font-size:20px; font-weight:400; line-height:0; }
+    .demo-strip { text-align:center; background:#d29a64; color:#171511; padding:7px 12px; text-transform:uppercase; letter-spacing:.13em; font-size:10px; font-weight:800; }
+    .site-header { position:sticky; top:0; z-index:50; background:rgba(21,21,18,.96); backdrop-filter:blur(20px); border-bottom:1px solid var(--line); }
+    .nav { height:80px; display:flex; justify-content:space-between; align-items:center; gap:32px; }
+    .brand { display:flex; gap:12px; align-items:center; flex-shrink:0; }
+    .brand-mark { width:41px; height:41px; border:1.5px solid var(--copper); display:grid; place-items:center; font:800 24px/.8 "Barlow Condensed", sans-serif; letter-spacing:-.07em; color:var(--copper); padding-right:3px; }
+    .brand-name { display:flex; flex-direction:column; font-family:"Barlow Condensed",sans-serif; font-size:23px; font-weight:800; letter-spacing:.025em; line-height:.81; }
+    .brand-name small { font:700 9px/1.2 "DM Sans", sans-serif; letter-spacing:.25em; margin-top:6px; }
+    .nav-links { display:flex; align-items:center; gap:34px; }
+    .nav-links a { color:#c5c0b7; font-size:12px; font-weight:700; transition:color .2s; }
+    .nav-links a:hover { color:var(--copper); }
+    .nav .btn { padding:12px 19px; min-height:43px; }
+    .menu-button { display:none; width:42px; height:42px; border:1px solid var(--line); background:transparent; color:var(--cream); font-size:25px; cursor:pointer; }
+    .hero { position:relative; min-height:668px; overflow:hidden; border-bottom:1px solid var(--line); }
+    .hero-layout { display:grid; grid-template-columns:1.08fr .92fr; min-height:668px; align-items:center; position:relative; }
+    .hero-copy { padding:78px 0 90px; position:relative; z-index:2; }
+    .hero-tag { display:flex; align-items:center; gap:13px; margin-bottom:32px; }
+    .hero-tag::before { content:""; width:29px; height:1px; background:var(--copper); }
+    h1 { font-size:clamp(84px,9.2vw,144px); margin:0 0 28px; max-width:740px; position:relative; z-index:3; }
+    h1 em { color:var(--copper); font-style:normal; }
+    .hero-sub { color:#c7c1b5; max-width:380px; font-size:15px; line-height:1.8; margin-bottom:29px; }
+    .button-row { display:flex; gap:11px; flex-wrap:wrap; }
+    .hero-image-wrap { position:absolute; right:calc((var(--page) - 100%) / 2); top:0; bottom:0; width:51%; min-width:440px; overflow:hidden; background:linear-gradient(140deg,#43352d,#1f211d); }
+    .hero-image-wrap::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,#151512 0%,rgba(21,21,18,.54) 30%,rgba(21,21,18,.03) 80%),linear-gradient(0deg,rgba(21,21,18,.4),transparent 25%); }
+    .hero-image { width:100%; height:100%; object-fit:cover; object-position:center; filter:saturate(.66) contrast(1.08); }
+    .vertical-label { position:absolute; right:24px; bottom:35px; writing-mode:vertical-rl; transform:rotate(180deg); color:rgba(255,255,255,.76); z-index:3; font-size:10px; font-weight:700; letter-spacing:.22em; }
+    .hero-index { margin-top:67px; display:flex; gap:15px; align-items:center; color:#9f988e; font-size:11px; text-transform:uppercase; letter-spacing:.17em; font-weight:700; }
+    .hero-index span { width:25px; height:1px; background:var(--copper); }
+    .ticker { background:var(--copper); color:var(--ink); overflow:hidden; padding:17px 0; }
+    .ticker-inner { display:flex; justify-content:space-between; align-items:center; white-space:nowrap; gap:20px; font:700 15px "Barlow Condensed",sans-serif; letter-spacing:.15em; }
+    .ticker b { font-weight:900; font-size:17px; }
+    .section { padding:112px 0; }
+    .section-title { font-size:clamp(64px,7.4vw,108px); margin:14px 0 0; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:50px; margin-bottom:47px; }
+    .section-head p { color:var(--muted); max-width:350px; margin:0 0 5px; line-height:1.8; }
+    .styles { background:#1b1b17; }
+    .styles-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:13px; }
+    .style-card { background:#27261f; position:relative; min-width:0; }
+    .style-photo { aspect-ratio:3/4; overflow:hidden; background:linear-gradient(140deg,#55493d,#26221d); }
+    .style-photo img { width:100%; height:100%; object-fit:cover; filter:grayscale(.32) contrast(1.06); transition:transform .7s ease,filter .5s ease; }
+    .style-card:hover img { transform:scale(1.055); filter:grayscale(0); }
+    .style-details { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:19px 17px; border-top:1px solid var(--line); }
+    .style-details h3 { margin:0; font:700 26px/1 "Barlow Condensed",sans-serif; text-transform:uppercase; }
+    .style-details span { font-size:11px; font-weight:700; color:var(--copper); }
+    .disclaimer { font-size:11px; color:var(--muted); margin:22px 0 0; }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:110px; align-items:center; }
+    .about-visual { position:relative; aspect-ratio:5/5.25; background:#282723; overflow:hidden; }
+    .about-visual img { width:100%; height:100%; object-fit:cover; filter:grayscale(.55); }
+    .about-visual .photo-note { position:absolute; left:0; bottom:0; font-size:10px; color:var(--ink); background:var(--copper); padding:12px 18px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
+    .about-text h2 { font-size:clamp(66px,6vw,94px); margin:15px 0 22px; }
+    .about-text p { color:#bdb5a9; line-height:1.9; max-width:390px; }
+    .about-text .number { font:800 102px/.85 "Barlow Condensed",sans-serif; color:rgba(210,154,100,.18); margin-bottom:22px; }
+    .services { background:#22211d; }
+    .service-list { border-top:1px solid var(--line); }
+    .service-row { display:grid; grid-template-columns:82px 1fr 2fr; gap:20px; align-items:center; border-bottom:1px solid var(--line); padding:29px 3px; }
+    .service-row .id { color:var(--copper); font-weight:700; font-size:12px; }
+    .service-row h3 { margin:0; text-transform:uppercase; font:700 37px/.95 "Barlow Condensed",sans-serif; }
+    .service-row p { margin:0; color:var(--muted); max-width:460px; }
+    .contact-band { padding:82px 0; background:var(--copper); color:var(--ink); }
+    .contact-grid { display:flex; justify-content:space-between; align-items:center; gap:40px; }
+    .contact-band .eyebrow { color:#42301c; }
+    .contact-band h2 { font-size:clamp(67px,8vw,112px); margin:12px 0 0; }
+    .contact-band .btn { color:var(--cream); background:var(--ink); padding:21px 30px; }
+    .contact-band .btn:hover { background:#302c25; }
+    .location-grid { display:grid; grid-template-columns:.92fr 1.08fr; gap:75px; align-items:stretch; }
+    .location h2 { margin:15px 0 35px; }
+    .address-label { font-size:11px; font-weight:700; color:var(--copper); letter-spacing:.18em; margin-bottom:12px; }
+    address { font-style:normal; font-size:22px; font-weight:600; line-height:1.6; max-width:370px; }
+    .location-note { color:var(--muted); font-size:13px; margin:20px 0 30px; }
+    .map-panel { min-height:400px; display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; background:repeating-linear-gradient(0deg,transparent 0 42px,rgba(255,255,255,.055) 43px 44px),repeating-linear-gradient(90deg,transparent 0 42px,rgba(255,255,255,.055) 43px 44px),#2d2e27; border:1px solid var(--line); }
+    .map-panel::before,.map-panel::after { content:""; position:absolute; border-radius:50%; border:1px solid rgba(210,154,100,.35); width:290px; height:290px; }
+    .map-panel::after { width:180px; height:180px; background:rgba(210,154,100,.07); }
+    .map-content { position:relative; z-index:2; text-align:center; padding:25px; }
+    .map-pin { font-size:50px; line-height:1; color:var(--copper); }
+    .map-content strong { display:block; margin-top:16px; font:700 27px/1 "Barlow Condensed",sans-serif; letter-spacing:.06em; }
+    .map-content small { display:block; font-size:11px; color:var(--muted); margin-top:8px; }
+    .footer { border-top:1px solid var(--line); padding:30px 0 105px; }
+    .footer-inner { display:flex; justify-content:space-between; gap:24px; align-items:start; }
+    .footer p { max-width:430px; margin:6px 0; color:#a39d91; font-size:11px; }
+    .footer .brand-name { font-size:22px; }
+    .mobile-cta { display:none; }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { transition-duration:.01ms!important; animation-duration:.01ms!important; } }
+    @media (max-width:950px) {
+      :root { --page:min(100% - 40px,1180px); }
+      .nav-links { gap:17px; }
+      .hero,.hero-layout { min-height:605px; }
+      h1 { font-size:clamp(75px,10vw,120px); }
+      .hero-image-wrap { width:57%; min-width:0; }
+      .styles-grid { grid-template-columns:repeat(2,1fr); }
+      .about-grid { gap:45px; }
+      .location-grid { gap:30px; }
+      .section { padding:85px 0; }
+    }
+    @media (max-width:640px) {
+      :root { --page:calc(100% - 38px); }
+      html { scroll-padding-top:72px; }
+      .demo-strip { font-size:9px; letter-spacing:.08em; }
+      .nav { height:67px; gap:10px; }
+      .brand-mark { width:35px; height:35px; font-size:21px; }
+      .brand-name { font-size:20px; }
+      .brand-name small { font-size:8px; }
+      .nav .btn { display:none; }
+      .menu-button { display:grid; place-items:center; }
+      .nav-links { display:none; position:absolute; top:100%; left:0; right:0; padding:22px 19px; background:#1c1b17; flex-direction:column; align-items:stretch; gap:0; border-bottom:1px solid var(--line); box-shadow:0 16px 24px rgba(0,0,0,.3); }
+      .nav-links.open { display:flex; }
+      .nav-links a { display:block; padding:14px; font-size:15px; }
+      .hero { min-height:0; }
+      .hero-layout { min-height:700px; display:block; }
+      .hero-image-wrap { right:-19px; top:0; bottom:auto; height:410px; width:calc(100% + 38px); opacity:.84; }
+      .hero-image-wrap::after { background:linear-gradient(0deg,#151512 0%,rgba(21,21,18,.78) 23%,rgba(21,21,18,.1) 80%),linear-gradient(90deg,rgba(21,21,18,.6),transparent 70%); }
+      .hero-image { object-position:center 36%; }
+      .hero-copy { padding:275px 0 52px; }
+      .hero-tag { margin-bottom:18px; font-size:10px; }
+      h1 { font-size:clamp(74px,18vw,103px); line-height:.88; margin-bottom:18px; }
+      .hero-sub { font-size:13px; line-height:1.8; max-width:330px; margin-bottom:23px; }
+      .button-row { gap:9px; }
+      .button-row .btn { padding:14px 15px; font-size:12px; min-height:47px; }
+      .hero-index { margin-top:35px; }
+      .vertical-label { display:none; }
+      .ticker { padding:12px 0; }
+      .ticker-inner { gap:23px; justify-content:flex-start; font-size:12px; }
+      .ticker b { font-size:12px; }
+      .section { padding:74px 0; }
+      .section-head { display:block; margin-bottom:26px; }
+      .section-head p { margin-top:22px; font-size:13px; }
+      .section-title { font-size:clamp(62px,14vw,86px); }
+      .styles-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+      .style-details { padding:14px 11px; }
+      .style-details h3 { font-size:22px; }
+      .style-details span { font-size:9px; }
+      .style-photo { aspect-ratio:3/4; }
+      .about-grid { display:flex; flex-direction:column-reverse; gap:38px; }
+      .about-visual { width:100%; aspect-ratio:1.2; }
+      .about-text h2 { font-size:74px; }
+      .about-text .number { font-size:71px; margin-bottom:5px; }
+      .service-row { grid-template-columns:30px 1fr; gap:10px; padding:25px 0; }
+      .service-row h3 { font-size:31px; }
+      .service-row p { grid-column:2; font-size:12px; }
+      .contact-band { padding:58px 0; }
+      .contact-grid { flex-direction:column; align-items:flex-start; gap:25px; }
+      .contact-band h2 { font-size:75px; }
+      .location-grid { display:block; }
+      .location .section-title { font-size:75px; }
+      .map-panel { min-height:300px; margin-top:38px; }
+      address { font-size:18px; }
+      .footer { padding:30px 0 108px; }
+      .footer-inner { flex-direction:column; }
+      .mobile-cta { position:fixed; display:flex; bottom:0; left:0; right:0; align-items:center; gap:12px; z-index:40; background:rgba(21,21,18,.97); border-top:1px solid var(--line); padding:11px max(19px,env(safe-area-inset-right)) max(11px,env(safe-area-inset-bottom)) max(19px,env(safe-area-inset-left)); }
+      .mobile-cta span { font-size:11px; color:var(--muted); flex:1; line-height:1.35; }
+      .mobile-cta strong { display:block; color:var(--cream); font-size:14px; }
+      .mobile-cta .btn { min-height:42px; padding:10px 17px; font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-strip">Konsep demo untuk portfolio · Bukan laman rasmi Jong Barbershop</div>
+  <header class="site-header">
+    <nav class="container nav" aria-label="Navigasi utama">
+      <a class="brand" href="#home" aria-label="Jong Barbershop - ke atas">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span class="brand-name">JONG<small>BARBERSHOP</small></span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#gaya">Inspirasi Gaya</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#perkhidmatan">Potong Rambut</a>
+        <a href="#lokasi">Lokasi</a>
+      </div>
+      <a class="btn btn-primary" href="https://wa.me/60189854070?text=Hai%20Jong%20Barbershop%2C%20saya%20nak%20tanya%20tentang%20potong%20rambut." target="_blank" rel="noopener noreferrer">Tanya di WhatsApp <span class="arrow" aria-hidden="true">↗</span></a>
+      <button class="menu-button" id="menuButton" type="button" aria-label="Buka menu" aria-controls="navLinks" aria-expanded="false">☰</button>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" id="home" aria-labelledby="heroTitle">
+      <div class="container hero-layout">
+        <div class="hero-image-wrap">
+          <img class="hero-image" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1300&q=85" alt="Gambar inspirasi suasana kedai gunting rambut, bukan Jong Barbershop" fetchpriority="high" />
+          <span class="vertical-label">PUCHONG PRIMA · SELANGOR</span>
+        </div>
+        <div class="hero-copy">
+          <div class="eyebrow hero-tag">Jong Barbershop · Puchong Prima</div>
+          <h1 class="display" id="heroTitle">POTONGAN<br><em>KEMAS.</em><br>GAYA<br>SENDIRI.</h1>
+          <p class="hero-sub">Gaya rambut bermula dengan pilihan anda. Cari inspirasi, tunjuk gaya kegemaran dan singgah ke Jong Barbershop di Taman Puchong Prima.</p>
+          <div class="button-row">
+            <a class="btn btn-primary" href="https://wa.me/60189854070?text=Hai%20Jong%20Barbershop%2C%20saya%20nak%20tanya%20tentang%20potong%20rambut." target="_blank" rel="noopener noreferrer">Tanya di WhatsApp <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="btn btn-outline" href="#gaya">Lihat Gaya <span class="arrow" aria-hidden="true">↘</span></a>
+          </div>
+          <div class="hero-index">TAMAN PUCHONG PRIMA <span></span> 47100 PUCHONG</div>
+        </div>
+      </div>
+    </section>
+    <div class="ticker" aria-label="Puchong Prima · Gaya Anda · Jong Barbershop">
+      <div class="container ticker-inner"><span>PUCHONG PRIMA</span><b>✳</b><span>GAYA ANDA</span><b>✳</b><span>JONG BARBERSHOP</span><b>✳</b><span>SELANGOR</span></div>
+    </div>
+    <section class="section styles" id="gaya">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">01 / Pilihan Gaya</div><h2 class="display section-title">FIND YOUR<br>LOOK<span style="color:var(--copper)">.</span></h2></div>
+          <p>Tak pasti nak potong macam mana? Simpan gambar inspirasi dan tunjukkan kepada barber untuk bincang gaya yang anda suka.</p>
+        </div>
+        <div class="styles-grid">
+          <article class="style-card"><div class="style-photo"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=700&q=80" alt="Foto inspirasi potongan rambut pendek" loading="lazy"/></div><div class="style-details"><h3>Short Cut</h3><span>01 ↗</span></div></article>
+          <article class="style-card"><div class="style-photo"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=700&q=80" alt="Foto inspirasi gaya rambut kemas" loading="lazy"/></div><div class="style-details"><h3>Clean Look</h3><span>02 ↗</span></div></article>
+          <article class="style-card"><div class="style-photo"><img src="https://images.unsplash.com/photo-1599351431613-18ef1fdd27e1?auto=format&fit=crop&w=700&q=80" alt="Foto inspirasi potongan rambut lelaki" loading="lazy"/></div><div class="style-details"><h3>Modern Style</h3><span>03 ↗</span></div></article>
+          <article class="style-card"><div class="style-photo"><img src="https://images.unsplash.com/photo-1593702295094-aea22597af65?auto=format&fit=crop&w=700&q=80" alt="Foto inspirasi gaya rambut klasik" loading="lazy"/></div><div class="style-details"><h3>Classic Cut</h3><span>04 ↗</span></div></article>
+        </div>
+        <p class="disclaimer">* Semua gambar ialah ilustrasi/inspirasi umum, bukan hasil kerja sebenar atau gambar premis Jong Barbershop. Gaya yang tersedia perlu disahkan dengan kedai.</p>
+      </div>
+    </section>
+    <section class="section" id="tentang">
+      <div class="container about-grid">
+        <div class="about-visual"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=1000&q=80" alt="Gambar ilustrasi kedai gunting rambut" loading="lazy"/><span class="photo-note">Gambar Ilustrasi Sahaja</span></div>
+        <div class="about-text"><div class="number">02.</div><div class="eyebrow">Gaya Anda, Pilihan Anda</div><h2 class="display">KEEP IT<br><span style="color:var(--copper)">YOUR WAY.</span></h2><p>Daripada potongan ringkas hingga inspirasi gaya baharu, semuanya bermula dengan apa yang anda inginkan. Bawa gambar rujukan dan bincang pilihan yang sesuai sebelum potong rambut.</p><a class="btn btn-outline" href="#lokasi">Cari Kami di Puchong <span class="arrow" aria-hidden="true">↘</span></a></div>
+      </div>
+    </section>
+    <section class="section services" id="perkhidmatan">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">03 / Sebelum Singgah</div><h2 class="display section-title">CUT &<br>CONNECT<span style="color:var(--copper)">.</span></h2></div><p>Maklumat asas untuk membantu anda merancang kunjungan. Sahkan jenis potongan, harga dan waktu operasi terus dengan kedai.</p></div>
+        <div class="service-list">
+          <div class="service-row"><span class="id">01 /</span><h3>Potong Rambut</h3><p>Hubungi kedai untuk bertanya tentang jenis potongan rambut yang tersedia.</p></div>
+          <div class="service-row"><span class="id">02 /</span><h3>Rujukan Gaya</h3><p>Bawa gambar gaya yang anda suka dan semak dengan barber sebelum memulakan potongan.</p></div>
+          <div class="service-row"><span class="id">03 /</span><h3>Semak Dahulu</h3><p>Tanya harga semasa, waktu operasi dan sama ada perlu membuat tempahan.</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="contact-band">
+      <div class="container contact-grid"><div><div class="eyebrow">Ada soalan?</div><h2 class="display">NAK POTONG<br>RAMBUT?</h2></div><a class="btn" href="https://wa.me/60189854070?text=Hai%20Jong%20Barbershop%2C%20saya%20nak%20tanya%20harga%20dan%20waktu%20operasi." target="_blank" rel="noopener noreferrer">Hubungi Kedai <span class="arrow" aria-hidden="true">↗</span></a></div>
+    </section>
+    <section class="section location" id="lokasi">
+      <div class="container location-grid">
+        <div><div class="eyebrow">04 / Cari Kami</div><h2 class="display section-title">YOUR NEXT<br><span style="color:var(--copper)">STOP.</span></h2><div class="address-label">ALAMAT KEDAI</div><address>No 24, 25, Jalan Prima Utama 5/6,<br>Taman Puchong Prima,<br>47100 Puchong, Selangor.</address><p class="location-note">Hubungi dahulu untuk mengesahkan waktu operasi, harga dan ketersediaan.</p><div class="button-row"><a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=Jong%20Barbershop%20Puchong%20Taman%20Puchong%20Prima" target="_blank" rel="noopener noreferrer">Buka Google Maps <span class="arrow" aria-hidden="true">↗</span></a><a class="btn btn-outline" href="tel:+60189854070">Telefon Kedai <span class="arrow" aria-hidden="true">↗</span></a></div></div>
+        <div class="map-panel" role="img" aria-label="Ilustrasi lokasi; gunakan butang Google Maps untuk arah sebenar"><div class="map-content"><div class="map-pin" aria-hidden="true">⌖</div><strong>JONG BARBERSHOP</strong><small>TAMAN PUCHONG PRIMA · 47100 PUCHONG</small></div></div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="container footer-inner"><a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">J</span><span class="brand-name">JONG<small>BARBERSHOP</small></span></a><div><p>© 2026 · Konsep demo portfolio. Bukan laman web rasmi Jong Barbershop dan tidak disahkan oleh pemilik.</p><p>Gambar ialah bahan rujukan/inspirasi. Maklumat perniagaan daripada direktori awam dan perlu disahkan sebelum diterbitkan sebagai laman rasmi.</p></div></div></footer>
+  <div class="mobile-cta"><span><strong>Jong Barbershop</strong> Puchong Prima</span><a class="btn btn-primary" href="https://wa.me/60189854070?text=Hai%20Jong%20Barbershop%2C%20saya%20nak%20tanya%20tentang%20potong%20rambut." target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>
+  <script>
+    const menuButton = document.getElementById('menuButton');
+    const navLinks = document.getElementById('navLinks');
+    menuButton.addEventListener('click', () => {
+      const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+      menuButton.setAttribute('aria-expanded', String(!expanded));
+      menuButton.setAttribute('aria-label', expanded ? 'Buka menu' : 'Tutup menu');
+      menuButton.textContent = expanded ? '☰' : '×';
+      navLinks.classList.toggle('open', !expanded);
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Buka menu');
+      menuButton.textContent = '☰';
+    }));
+  </script>
+</body>
+</html>
